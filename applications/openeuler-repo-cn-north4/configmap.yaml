@@ -62,8 +62,8 @@ items:
     rsyncd.conf: |
       log file = /dev/stdout
       use chroot = yes
-      uid = root
-      gid = root
+      uid = eulerrepo
+      gid = eulerrepo
       max connections = 10
       timeout = 600
       read only = yes
