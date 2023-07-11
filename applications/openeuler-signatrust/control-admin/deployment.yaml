@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: signatrust-control-admin
+  namespace: openeuler-signatrust
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      component: signatrust-control-admin
+  template:
+    metadata:
+      labels:
+        component: signatrust-control-admin
+    spec:
+      containers:
+      - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/signatrust/signatrust-control-admin:0623bb88a327d78cad3d298d57b4cc3909842a45
+        imagePullPolicy: Always
+        name: signatrust-admin-server
+        command: ["sleep", "1000000"]
+        resources:
+          requests:
+            cpu: 1000m
+            memory: 1000Mi
+          limits:
+            cpu: 4000m
+            memory: 4000Mi
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        env:
+        - name: RUST_LOG
+          value: debug
+        volumeMounts:
+        - mountPath: /app/config/server.toml
+          name: secret
+          subPath: control-server-toml
+        - mountPath: /signatrust/.data/certs/server/server.crt
+          name: secret
+          subPath: domain-server-crt
+        - mountPath: /signatrust/.data/certs/server/server.key
+          name: secret
+          subPath: domain-server-key
+        - mountPath: /signatrust/.data/certs/server/ca_root.pem
+          name: secret
+          subPath: ca-root-pem
+      volumes:
+      - name: secret
+        secret:
+          secretName: signatrust-secrets
