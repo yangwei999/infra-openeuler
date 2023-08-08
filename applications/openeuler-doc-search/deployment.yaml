@@ -117,5 +117,5 @@ spec:
               name: doc-search-secrets
               key: FORUMDOMAIM
         - name: APPLICATION_PATH
-          value: "/EaseSearch/target/classes/application.yml"
+          value: "/home/easysearch/EaseSearch/target/classes/application.yml"
 
