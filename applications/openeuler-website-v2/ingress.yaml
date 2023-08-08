@@ -8,12 +8,12 @@ metadata:
     nginx.ingress.kubernetes.io/limit-connections: "2000"
     nginx.ingress.kubernetes.io/limit-rps: "2000"
     nginx.ingress.kubernetes.io/configuration-snippet: |
+      add_header X-Content-Type-Options "nosniff";
       add_header X-XSS-Protection "1; mode=block";
-      add_header X-Content-Type-Options "nosniff"
       add_header X-Frame-Options "DENY";
       add_header Cache-Control "no-cache";
       add_header Pragma "no-cache";
-      add_header Content-Security-Policy "script-src 'self' *.baidu.com *.googletagmanager.com *.amap.com 'unsafe-inline'; object-src 'none'; frame-src https://vhall.huawei.com" https://hw.vhallyun.com https://wenjuan.feishu.cn;
+      add_header Content-Security-Policy "worker-src 'self' 'unsafe-eval' 'unsafe-inline' * blob:";
       set $Real $proxy_add_x_forwarded_for;
       if ( $Real ~ (\d+)\.(\d+)\.(\d+)\.(\d+),(.*) ){
           set $Real $1.$2.$3.$4;
@@ -41,6 +41,10 @@ metadata:
       rewrite ^/zh/interaction/salon-list/detail/(.*)           /zh/interaction/event-list/review/detail/$1 permanent;
       rewrite ^/zh/security/safety-bulletin/$                   /zh/security/security-bulletins/         permanent;
       rewrite ^/zh/security/safety-bulletin/detail/             /zh/security/security-bulletins/detail/  permanent;
+      rewrite ^/zh/community/certification-services/search.html           /zh/  permanent;
+      rewrite ^/zh/community/certification-services/down.html             /zh/  permanent;
+      rewrite ^/en/community/certification-services/search.html           /en/  permanent;
+      rewrite ^/en/community/certification-services/down.html             /en/  permanent;
   name: openeuler-v2-www-website-ingress
 spec:
   tls:
