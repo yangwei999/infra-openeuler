@@ -9,10 +9,11 @@ metadata:
     nginx.ingress.kubernetes.io/limit-rps: "2000"
     nginx.ingress.kubernetes.io/configuration-snippet: |
       add_header X-XSS-Protection "1; mode=block";
-      add_header Strict-Transport-Security "max-age=31536000";
-      add_header X-Frame-Options "ALLOW-FROM https://vhall.huawei.com";
-      add_header X-Cache-Status $upstream_cache_status;
-      add_header Content-Security-Policy "worker-src 'self' 'unsafe-eval' 'unsafe-inline' * blob:";
+      add_header X-Content-Type-Options "nosniff"
+      add_header X-Frame-Options "DENY";
+      add_header Cache-Control "no-cache";
+      add_header Pragma "no-cache";
+      add_header Content-Security-Policy "script-src 'self' *.baidu.com *.googletagmanager.com *.amap.com 'unsafe-inline'; object-src 'none'; frame-src https://vhall.huawei.com" https://hw.vhallyun.com https://wenjuan.feishu.cn;
       set $Real $proxy_add_x_forwarded_for;
       if ( $Real ~ (\d+)\.(\d+)\.(\d+)\.(\d+),(.*) ){
           set $Real $1.$2.$3.$4;
