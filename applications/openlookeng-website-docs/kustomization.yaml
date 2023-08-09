@@ -9,4 +9,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openlookeng/openlookeng_website_docs
-  newTag: 7ad43ed76418a2f310aaca98c9af3672668d8673
+  newTag: 670bc923e7efc5d51ad283b3494ae9da2c99e610
