@@ -39,8 +39,8 @@ metadata:
       rewrite ^/zh/migration/implement-guide/                   /zh/migration/contact/ permanent;
       rewrite ^/zh/interaction/salon-list/$                     /zh/interaction/event-list/ permanent;
       rewrite ^/zh/interaction/salon-list/detail/(.*)           /zh/interaction/event-list/review/detail/$1 permanent;
-      rewrite ^/zh/security/safety-bulletin/$                   /zh/security/security-bulletins/         permanent;
-      rewrite ^/zh/security/safety-bulletin/detail/             /zh/security/security-bulletins/detail/  permanent;
+      rewrite ^/zh/security/safety-bulletin(/$|$)                   /zh/security/security-bulletins/         permanent;
+      rewrite ^/zh/security/safety-bulletin/detail(/$|$)             /zh/security/security-bulletins/detail/  permanent;
       rewrite ^/zh/community/certification-services/search.html           /zh/  permanent;
       rewrite ^/zh/community/certification-services/down.html             /zh/  permanent;
       rewrite ^/en/community/certification-services/search.html           /en/  permanent;
