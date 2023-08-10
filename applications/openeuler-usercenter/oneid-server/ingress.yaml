@@ -10,14 +10,12 @@ spec:
   rules:
   - host: oneid-server.osinfra.cn
     http:
-      paths:
-      - backend:
-          service:
-            name: oneid-server-service
-            port:
-              number: 80
-        path: /
-        pathType: ImplementationSpecific
+      paths:      
+        - path: /
+          pathType: ImplementationSpecific
+          backend:
+            serviceName: oneid-server-service	
+            servicePort: 80
   tls:
   - hosts:
     - oneid-server.osinfra.cn
