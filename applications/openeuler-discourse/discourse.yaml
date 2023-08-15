@@ -40,7 +40,12 @@ spec:
       containers:
       - name: web-server
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/discourse:v1.1.8
-        command: ["/sbin/boot"]
+        command:
+        - /bin/bash
+        - -c
+        - |
+          rails db:migrate
+          /sbin/boot
         ports:
         - containerPort: 80
         env:
