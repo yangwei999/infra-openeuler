@@ -51,7 +51,7 @@ spec:
         - name: BUILDER_CPU
           value: '4'
         - name: BUILDER_MEM
-          value: 8Gi
+          value: 16Gi
         - name: BUILDER_TIMEOUT
           value: '360'
         - name: BUILDER_TYPE
