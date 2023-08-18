@@ -118,4 +118,6 @@ spec:
               key: FORUMDOMAIM
         - name: APPLICATION_PATH
           value: "/home/easysearch/EaseSearch/target/classes/application.yml"
+        - name: SERVICE_URL
+          value: "https://gitee.com/opensourceway/om-data/raw/master/src/openeuler/server.yaml"
 
