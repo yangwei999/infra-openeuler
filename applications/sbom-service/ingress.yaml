@@ -35,7 +35,7 @@ spec:
   tls:
     - hosts:
         - sbom-service.osinfra.cn
-      secretName: sbom-server-tls
+      secretName: sbom-website-tls
   rules:
     - host: sbom-service.osinfra.cn
       http:
