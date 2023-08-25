@@ -4,9 +4,14 @@ resources:
   - configmap.yaml
   - deployment.yaml
   - service.yaml
+  - ingress.yaml
+  - nginx-html-configmap.yaml
 commonLabels:
   app: repo-nginx-pod
 commonAnnotations:
   owner: caozhi
   email: "caozhi1214@gmail.com"
 namespace: repo2
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/sbom-repo-service 
+  newTag: v1.0.20221108210256

@@ -16,13 +16,13 @@ kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/ccs-config
   newName: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/ccs-config
-  newTag: "1640050915"
+  newTag: "1662104526"
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/ccs-eureka
   newName: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/ccs-eureka
-  newTag: "1640051432"
+  newTag: "1662104342"
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/ccs-gateway
   newName: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/ccs-gateway
-  newTag: "1640050920"
+  newTag: "1662104674"
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/ccs-server
   newName: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/ccs-server
-  newTag: "1640050924"
+  newTag: "1682582454"

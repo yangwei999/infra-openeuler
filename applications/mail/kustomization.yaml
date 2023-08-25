@@ -1,16 +1,27 @@
 resources:
-  - ingress.yaml
-  - config.yaml
-  - mailcore.yaml
-  - mailcore-utils.yaml
-  - maildatabase.yaml
-  - mtaservice.yaml
-  - namespace.yaml
-  - secrets.yaml
-  - storage.yaml
-  - suiteservice.yaml
-  - webservice.yaml
+- exim-configmap.yaml
+- ingress.yaml
+- mailcore.yaml
+- mailcoreservice.yaml
+- maildatabase.yaml
+- mtaservice.yaml
+- namespace.yaml
+- nginx-config.yaml
+- secrets.yaml
+- storage.yaml
+- suiteservice.yaml
+- webservice.yaml
+- scan_subscribe_pending.yaml
 commonAnnotations:
+  email: tommylikehu@gmail.com
   owner: tommylikehu
-  email: "tommylikehu@gmail.com"
 namespace: mail
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/app-mailman/clean-pending-subscription
+  newTag: 5d9e8b1290ae810a1ce8621f5de6c6ccd9d296511677657068
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/app-mailman/mailman-core-new-build
+  newTag: 970d27521a1aca24f9e0ff85047f99755ba3af7c1677654154
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/app-mailman/mailman-web-new-build
+  newTag: 6998ad8a19f71e65b78b4a1145f00ff218c712551691630699

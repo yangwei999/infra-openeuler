@@ -1,17 +1,20 @@
 resources:
-- ../openeuler-website-docs/
+- namespace.yaml
 - secrets.yaml
+- service.yaml
+- ingress.yaml
+- deployment.yaml
 commonLabels:
   name: website-docs
 commonAnnotations:
-  email: 245462755@qq.com
-  owner: zhengyuhang
-patchesStrategicMerge:
-- ingress.yaml
-- deployment.yaml
+  kubernetes.ops.cluster: openeuler-mos-cce
+  kubernetes.ops.email: 845831435@qq.com
+  kubernetes.ops.os.base: openeuler
+  kubernetes.ops.owner: wangxing
+  kubernetes.ops.region: mos
 namespace: website-docs
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-website-docs-ru
-  newTag: 23a38963a01caafa685011feb0f0bf908858d5341641807490
+  newTag: v1.0.20230508082002

@@ -1,12 +1,19 @@
+---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   annotations:
-    kubernetes.io/ingress.class: nginx
+    kubernetes.io/ingress.class: nginx-repo
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      location ~ \.iso$ {
+        rewrite ^/(.*)  https://mirrors.tuna.tsinghua.edu.cn/openeuler$request_uri;
+      }
+      location ~ iso.sha256sum$ {
+        rewrite ^/(.*)  https://mirrors.tuna.tsinghua.edu.cn/openeuler$request_uri;
+      }
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/limit-rate: "10240"
-    cert-manager.io/cluster-issuer: letsencrypt-issuer
-  name: repo-ingress
+  name: repo-ingress-nginx-repo
+  namespace: repo-mirror
 spec:
   tls:
     - hosts:
@@ -20,3 +27,21 @@ spec:
               serviceName: repo-service
               servicePort: 80
             path: /
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx-repo
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/permanent-redirect: https://archives.openeuler.openatom.cn$request_uri
+  name: repo-archives-hk-ingress
+  namespace: repo-mirror
+spec:
+  tls:
+    - hosts:
+        - archives.openeuler.org
+      secretName: repo-tls
+  rules:
+    - host: archives.openeuler.org

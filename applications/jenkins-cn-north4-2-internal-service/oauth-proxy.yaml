@@ -1,0 +1,116 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: oauth2-proxy
+  name: oauth2-proxy
+  namespace: jenkins-internal-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: oauth2-proxy
+  template:
+    metadata:
+      labels:
+        k8s-app: oauth2-proxy
+    spec:
+      containers:
+        - args:
+          - --provider=oidc
+          - --email-domain=*
+          - --upstream=http://jenkins.jenkins.svc.cluster.local
+          - --http-address=0.0.0.0:4180
+          - --provider-display-name=authing
+          - --cookie-expire=12h0m0s
+          - --redirect-url=https://jenkins.openeuler.openatom.cn/oauth2/callback
+          - --oidc-issuer-url=https://jenkins-openeuler-openatom.authing.cn/oidc
+          # for jenkins job or views and their resource to to loaded
+          - --skip-auth-regex=^/job/
+          - --skip-auth-regex=^/queue/
+          - --skip-auth-regex=^/view/
+          - --skip-auth-regex=^/static/
+          - --skip-auth-regex=^/adjuncts/
+          - --skip-auth-regex=^/images/
+          - --skip-auth-regex=^/blue/
+          # for webhook to be triggered
+          - --skip-auth-regex=^/gitee-project/
+          # for openeuler generic webhook
+          - --skip-auth-regex=^/generic-webhook-trigger/
+          - --skip-auth-regex=^/crumbIssuer/
+          - --skip-auth-regex=^/computer/
+          - --insecure-oidc-allow-unverified-email=true
+          - --session-cookie-minimal=false
+          - --pass-access-token=true
+          - --cookie-secure=false
+          - --login-url=https://xiheapi.osinfra.cn/oneid/oidc/authorize
+          - --redeem-url=https://xiheapi.osinfra.cn/oneid/oidc/token
+          - --profile-url=https://xiheapi.osinfra.cn/oneid/oidc/user
+          - --skip-oidc-discovery=true
+          - --insecure-oidc-skip-issuer-verification=true
+          - --skip-jwt-bearer-tokens=false
+          - --oidc-jwks-url=https://oauth2-proxy.authing.cn/oidc/.well-known/jwks.json
+          - --set-xauthrequest=true
+          - --skip-auth-strip-headers=false
+          - --set-authorization-header=true
+          - --scope=profile openid email id_token
+          - --signature-key=sha256:81nwm1iqdN3FBtnj4O0kL6BRuLfzMzCKaawnztLSRYQ
+          env:
+            - name: OAUTH2_PROXY_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  key: client_id
+                  name: jenkins-oauth-secret
+            - name: OAUTH2_PROXY_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: client_secret
+                  name: jenkins-oauth-secret
+            - name: OAUTH2_PROXY_COOKIE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  key: cookie_secret
+                  name: jenkins-oauth-secret
+          image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/oauth2-proxy:b2d87e8e29285720327bf01aee604f929ea64dd4
+          imagePullPolicy: Always
+          name: oauth2-proxy
+          ports:
+            - containerPort: 4180
+              protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    k8s-app: oauth2-proxy
+  name: oauth2-proxy
+  namespace: jenkins-internal-service
+spec:
+  ports:
+    - name: http
+      port: 4180
+      protocol: TCP
+      targetPort: 4180
+  selector:
+    k8s-app: oauth2-proxy
+
+---
+apiVersion: secrets-manager.tuenti.io/v1alpha1
+kind: SecretDefinition
+metadata:
+  name: jenkins-oauth-secret
+  namespace: jenkins-internal-service
+spec:
+  name: jenkins-oauth-secret
+  keysMap:
+    client_id:
+      path: secrets/data/openeuler/jenkins-internal-service
+      key: client_id
+    client_secret:
+      path: secrets/data/openeuler/jenkins-internal-service
+      key: client_secret
+    cookie_secret:
+      path: secrets/data/openeuler/jenkins-internal-service
+      key: cookie_secret
+

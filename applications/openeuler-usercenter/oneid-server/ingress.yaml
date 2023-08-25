@@ -1,0 +1,22 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/ingress.class: nginx
+  name: openeuler-oneid-server-ingress
+  namespace: openeuler-usercenter
+spec:
+  rules:
+  - host: oneid-server.osinfra.cn
+    http:
+      paths:      
+        - path: /
+          pathType: ImplementationSpecific
+          backend:
+            serviceName: oneid-server-service	
+            servicePort: 80
+  tls:
+  - hosts:
+    - oneid-server.osinfra.cn
+    secretName: oneid-server-tls

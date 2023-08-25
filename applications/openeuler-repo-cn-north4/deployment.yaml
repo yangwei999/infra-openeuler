@@ -23,7 +23,7 @@ spec:
         app: repo-nginx-pod
     spec:
       containers:
-        - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/nginx-extras:1.21.0-with-fancy-templates-repo
+        - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/nginx-extras:v1.20-nginx-with-fancy-templates-0620
           imagePullPolicy: IfNotPresent
           name: repo-nginx
           resources:
@@ -39,12 +39,6 @@ spec:
             - mountPath: /etc/nginx/conf/ssl/privkey.pem
               name: website-secrets-volume
               subPath: privkey.pem
-            - mountPath: /etc/nginx/conf/nginx.conf
-              name: repo-nginx-configmap-volume
-              subPath: nginx.conf
-            - mountPath: /etc/nginx/conf/conf.d/default.conf
-              name: repo-nginx-configmap-volume
-              subPath: default.conf
             - mountPath: /repo/openeuler
               name: openeuler-data-volume
         - command:
@@ -82,6 +76,18 @@ spec:
             - mountPath: /root/.ssh/authorized_keys.ro
               name: repo-nginx-configmap-volume
               subPath: ssh.pub
+        - name: sbom-repo-service
+          image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/sbom-repo-service:568471465707c5102c1e93c350cfd8fb359f2e4f
+          volumeMounts:
+          - mountPath: /repo/openeuler
+            name: openeuler-data-volume
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 1000Mi
+            limits:
+              cpu: 1000m
+              memory: 1000Mi
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
@@ -99,3 +105,7 @@ spec:
           secret:
             defaultMode: 420
             secretName: website-secrets
+        - configMap:
+            defaultMode: 420
+            name: nginx-html-configmap
+          name: nginx-html-configmap

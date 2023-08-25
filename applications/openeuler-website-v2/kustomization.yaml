@@ -4,7 +4,6 @@ resources:
 - service.yaml
 - ingress.yaml
 - secrets.yaml
-- purge-cache-job.yaml
 commonLabels:
   app: openeuler-website-v2
 commonAnnotations:
@@ -15,6 +14,6 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-website-backend
-  newTag: 9a1521f540148107caa31641905902
+  newTag: main-639b40
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/openeuler-website-frontend
-  newTag: 9a1521f540148107caa31641905902
+  newTag: b00510c3763d05cbb7f2f43e4ee60410fe74601e

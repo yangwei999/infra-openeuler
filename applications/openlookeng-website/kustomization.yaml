@@ -3,10 +3,10 @@ resources:
   - www-ingress.yaml
   - namespace.yaml
   - cibot-service.yaml
-  - cache-ingress.yaml
   - openlookeng-website-frontend-service.yaml
   - clasign-ingress.yaml
   - clasign-secrets.yaml
+  - tls.yaml
 commonLabels:
   app: openlookeng-website
 commonAnnotations:

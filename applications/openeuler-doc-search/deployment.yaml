@@ -1,0 +1,123 @@
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: doc-search
+  namespace: openeuler-doc-search
+spec:
+  replicas: 1
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: doc-search
+  template:
+    metadata:
+      labels:
+        app: doc-search
+    spec:
+      containers:
+      - name: doc-search
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/doc-search:b5aca110424dbfb67c653ed94969e42695bd7501
+        resources:
+          requests:
+            cpu: 500m
+            memory: 500Mi
+          limits:
+            cpu: 1000m
+            memory: 3000Mi
+        livenessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 8080
+          timeoutSeconds: 5
+        readinessProbe:
+          failureThreshold: 3
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          tcpSocket:
+            port: 8080
+          timeoutSeconds: 5
+        env:
+        - name: eshost
+          valueFrom:
+            secretKeyRef:
+              name: doc-search-secrets
+              key: host
+        - name: esusername
+          valueFrom:
+            secretKeyRef:
+              name: doc-search-secrets
+              key: username
+        - name: espassword
+          valueFrom:
+            secretKeyRef:
+              name: doc-search-secrets
+              key: password
+        - name: esport
+          valueFrom:
+            secretKeyRef:
+              name: doc-search-secrets
+              key: port
+        - name: searchsystem
+          valueFrom:
+            secretKeyRef:
+              name: doc-search-secrets
+              key: system
+        - name: depp
+          valueFrom:
+            secretKeyRef:
+              name: doc-search-secrets
+              key: depp
+        - name: teshost
+          valueFrom:
+            secretKeyRef:
+              name: doc-search-secrets
+              key: teshost
+        - name: tesport
+          valueFrom:
+            secretKeyRef:
+              name: doc-search-secrets
+              key: tesport
+        - name: tesusername
+          valueFrom:
+            secretKeyRef:
+              name: doc-search-secrets
+              key: tesusername
+        - name: tespassword
+          valueFrom:
+            secretKeyRef:
+              name: doc-search-secrets
+              key: tespassword
+        - name: kneed
+          valueFrom:
+            secretKeyRef:
+              name: doc-search-secrets
+              key: kneed
+        - name: kbootstrap
+          valueFrom:
+            secretKeyRef:
+              name: doc-search-secrets
+              key: kbootstrap
+        - name: kgroup
+          valueFrom:
+            secretKeyRef:
+              name: doc-search-secrets
+              key: kgroup
+        - name: FORUMDOMAIM
+          valueFrom:
+            secretKeyRef:
+              name: doc-search-secrets
+              key: FORUMDOMAIM
+        - name: APPLICATION_PATH
+          value: "/home/easysearch/EaseSearch/target/classes/application.yml"
+        - name: SERVICE_URL
+          value: "https://gitee.com/opensourceway/om-data/raw/master/src/openeuler/server.yaml"
+

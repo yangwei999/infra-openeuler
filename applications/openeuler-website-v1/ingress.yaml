@@ -1,0 +1,53 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/limit-connections: "2000"
+    nginx.ingress.kubernetes.io/limit-rps: "2000"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      add_header X-Content-Type-Options "nosniff";
+      add_header X-XSS-Protection "1; mode=block";
+      add_header X-Frame-Options "DENY";
+      add_header Cache-Control "no-cache";
+      add_header Pragma "no-cache";
+      add_header Content-Security-Policy "script-src 'self' *.baidu.com 'unsafe-eval' 'unsafe-inline';object-src 'none';frame-src https://vhall.huawei.com https://hw.vhallyun.com";
+      set $Real $proxy_add_x_forwarded_for;
+      if ( $Real ~ (\d+)\.(\d+)\.(\d+)\.(\d+),(.*) ){
+          set $Real $1.$2.$3.$4;
+      }
+      proxy_set_header True-Client-IP $Real;
+    nginx.ingress.kubernetes.io/server-snippet: |
+      set $allow_request 0;
+      if ($uri ~* ^/zh/interaction/summit-list/ ){
+        set $allow_request 1;
+      }
+      if ($uri ~* ^/ip-api/ ){
+        set $allow_request 1;
+      }
+      if ($uri ~* \.(js|css|png|ts|svg|woff|ttf|ico)$ ){
+        set $allow_request 1;
+      }
+      if ($uri ~* icons ){
+        set $allow_request 1;
+      }
+      if ($allow_request = 0){
+        rewrite ^/.* https://www.openeuler.org;
+      }
+  name: website-v1-ingress
+  namespace: website-v1
+spec:
+  tls:
+    - hosts:
+        - v1.openeuler.org
+      secretName: website-v1-tls
+  rules:
+    - host: v1.openeuler.org
+      http:
+        paths:
+          - backend:
+              serviceName: website-v1-service
+              servicePort: 80
+            path: /
+

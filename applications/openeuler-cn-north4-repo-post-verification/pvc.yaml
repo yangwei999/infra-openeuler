@@ -1,0 +1,15 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  labels:
+    failure-domain.beta.kubernetes.io/zone: cn-north-4c
+  name: openeuler-log-data-volume
+  namespace: repo-post-verification
+spec:
+  accessModes:
+  - ReadWriteOnce
+  storageClassName: csi-disk
+  resources:
+    requests:
+      storage: 10Gi

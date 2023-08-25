@@ -1,0 +1,33 @@
+# Deployment for packagemanage service
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: compass-ci-api
+  namespace: compass-ci
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: compass-ci-api
+  template:
+    metadata:
+      labels:
+        app: compass-ci-api
+    spec:
+      containers:
+        - name: compass-ci-api
+          image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/compass_ci_api:38c9c5c83689bb69c83ddb4dc6dc9fc73a834e7a1650451702
+          ports:                                                                                          
+          - containerPort: 9092                                                                           
+            name: http                                                                                    
+            protocol: TCP
+          resources:
+            requests:
+              cpu: 2000m
+              memory: 2000Mi

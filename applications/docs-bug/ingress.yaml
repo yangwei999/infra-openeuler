@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+  name: docs-bug-ingress
+  namespace: docs-bug
+spec:
+  tls:
+    - hosts:
+        - docs-bug.openeuler.sh
+      secretName: docs-bug-tls
+  rules:
+    - host: docs-bug.openeuler.sh
+      http:
+        paths:
+          - backend:
+              serviceName: docs-bug-service
+              servicePort: 80
+            path: /

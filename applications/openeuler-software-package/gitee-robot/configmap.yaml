@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: robot-configmap
+  namespace: openeuler-software-pkg
+data:
+  config.yaml: |
+    code:
+      pkg_src_org: src-openeuler
+      robot:
+        username: "${OPENEULER_ROBOT_NAME}"
+        token: "${OPENEULER_ROBOT_TOKEN}"
+      ci_repo:
+        repo: software-pkg
+        link: https://gitee.com/I-am-a-robot/software-pkg.git
+    kafka:
+      address: "${KAFKA_ADDRESS}"
+    email:
+      maintainer_email: ${MAINTAINER_EMAIL}
+      email:
+        auth_code: "${EMAIL_AUTH_CODE}"
+        from: "${EMAIL_FROM}"
+        host: "${EMAIL_HOST}"
+        port: ${EMAIL_PORT}
+    watch:
+      pkg_org: src-openeuler
+      robot_token: "${OPENEULER_ROBOT_TOKEN}"
+    community:
+      pkg_org: src-openeuler
+      robot_token: "${OPENEULER_ROBOT_TOKEN}"
+      community_org: openeuler
+      community_repo: community
+      ci_success_label: ci_successful
+      ci_failure_label: ci_failed
+    postgresql:
+      db:
+        host: "${DB_HOST}"
+        port: 5432
+        user: "${DB_USER}"
+        pwd: "${DB_PWD}"
+        name: "${DB_NAME}"
+        life: 2
+        max_conn: 500
+        max_idle: 250
+      table:
+        software_pkg_pr: software_pkg_watch_gitee
+    encryption:
+      encryption_key: "${ENCRYPTION_KEY}"
+    pull_request:
+      robot:
+        username: "${ROBOT_USERNAME}"
+        token: "${ROBOT_TOKEN}"
+        email: "${ROBOT_EMAIL}"
+        repo: "community_openeuler"
+        link: "https://gitee.com/I-am-a-robot/community_openeuler"
+      community_robot:
+        token: "${OPENEULER_ROBOT_TOKEN}"
+        link: "https://gitee.com/openeuler/community"
+      software_pkg:
+        endpoint: https://software-pkg.openeuler.org/zh/package-detail/
+    message_server:
+      user_agent: software-pkg
+      group_name: software-package
+      topics:
+        new_pkg: software_pkg_approved
+        community_event: openeuler-community
+      message:
+        topics_to_notify:
+          ci_passed: software_pkg_initialized
+          created_repo: software_pkg_repo_created
+          pushed_code: software_pkg_code_saved

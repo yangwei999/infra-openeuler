@@ -2,23 +2,11 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: openeuler-data-volume
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 10000Gi
-  storageClassName: ssd
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
   name: openeuler-data-volume-02
 spec:
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: 20000Gi
+      storage: 25000Gi
   storageClassName: sas

@@ -15,10 +15,12 @@ spec:
     spec:
       containers:
         - name: repo-nginx
-          image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/nginx-extras:1.21.0-with-fancy-templates-repo
+          image: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/nginx-extras:v1.20-nginx-with-fancy-templates-0620
           volumeMounts:
             - mountPath: /repo/openeuler
               name: data-volume
+            - mountPath: /repo/archives
+              name: archives-volume
             - mountPath: /etc/rsyncd.secrets.ro
               name: rsync-secrets-volume
               subPath: rsyncd_secrets
@@ -28,7 +30,7 @@ spec:
           resources:
             requests:
               cpu: 4000m
-              memory: 6000Mi
+              memory: 8000Mi
           command:
             - /bin/sh
             - -c
@@ -95,3 +97,10 @@ spec:
         - name: data-volume
           persistentVolumeClaim:
             claimName: openeuler-data-volume
+        - name: archives-volume
+          persistentVolumeClaim:
+            claimName: archives-repo-volume
+        - configMap:
+            defaultMode: 420
+            name: nginx-html-configmap
+          name: nginx-html-configmap

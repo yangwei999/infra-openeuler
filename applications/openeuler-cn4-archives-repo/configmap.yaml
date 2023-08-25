@@ -1,0 +1,173 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: archives-repo-configmap
+  namespace: archives-repo
+data:
+  rsyncd.conf: |
+    log file = /dev/stdout
+    use chroot = yes
+    uid = root
+    gid = root
+    max connections = 30
+    timeout = 600
+    read only = yes
+
+    [openeuler]
+    path = /repo/openeuler
+    comment = openeuler repo folder
+    read only = true
+    ignore nonreadable = yes
+    refuse options = checksum
+    dont compress = *
+  
+  nginx.conf: |
+    user  root;
+    worker_processes  6;
+
+    error_log  /var/log/nginx/error.log warn;
+    pid        /var/run/nginx.pid;
+
+
+    events {
+        worker_connections  10240;
+    }
+
+
+    http {
+        include       /etc/nginx/conf/mime.types;
+        default_type  application/octet-stream;
+        server_tokens off;
+
+        log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                          '$status $body_bytes_sent "$http_referer" '
+                          '"$http_user_agent" "$http_x_forwarded_for"';
+
+        access_log  /var/log/nginx/access.log  main;
+
+        sendfile        on;
+        #tcp_nopush     on;
+
+        keepalive_timeout  65;
+
+        #gzip  on;
+
+        include /etc/nginx/conf/conf.d/*.conf;
+    }
+  
+  default.conf: |
+    server {
+      listen 80;
+
+      access_log  /var/log/nginx/host.access.log  main;
+      server_name archives.openeuler.openatom.cn;
+
+      location / {
+          root   /repo/openeuler;
+          fancyindex on;
+          fancyindex_exact_size off;
+          fancyindex_header /fancySource/header.html;
+          fancyindex_footer /fancySource/footer.html;
+          autoindex   on;
+
+      }
+      location /fancySource {
+          root /etc/nginx/conf/static;
+      }
+      location = /favicon.ico {
+                log_not_found off;
+                access_log off;
+      }
+    }
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-archives-html-configmap
+  namespace: archives-repo
+data:
+  header.html: |
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title></title>
+        <style type="text/css">
+        body,html {
+            background:#fff;
+            font-family:"Bitstream Vera Sans","Lucida Grande",
+            "Lucida Sans Unicode",Lucidux,Verdana,Lucida,sans-serif;
+        }
+        tr:nth-child(even) {
+            background: rgba(0,0,0,.03);
+        }
+        th,td {
+            padding:12px 0 12px 10px;
+            word-wrap: break-word;
+        }
+        th {
+            text-align: left;
+            font-weight: bold;
+            background: rgba(0,0,0,.05);
+        }
+        th a {
+            color: #000;
+        }
+        #list {
+            width: 1120px;
+            margin: 0 auto;
+        }
+        a {
+            color: #002fa7;
+            text-decoration: none;
+        }
+        a:hover {
+            color:#002fa7;
+        }
+        body>h1 {
+            width: 1120px;
+            margin: 20px auto;
+        }
+        @media screen and (max-width: 1120px){
+            #list,body>h1 {width: 100%;}
+            #list th{font-size: 14px;}
+            #list td{font-size: 12px;}
+            body>h1{font-size: 18px;}
+        }
+        </style>
+        <link rel="stylesheet" href="/fancySource/css/index.css">
+    </head>
+    <body>
+        <header>
+            <div class="header">
+                <div class="content">
+                    <a href="https://openeuler.org/zh/">
+                        <img src="/fancySource/img/openeuler.png" alt="" class="pc-logo" />
+                        <img src="/fancySource/img/logo-mobile.png" alt="" class="mobile-logo" />
+                    </a>
+                </div>
+            </div>
+        </header>
+        <div class="header-banner">
+            <div class="content">
+                <div class="text">
+                    <h1>openEuler Repo</h1>
+                    <p>You can find historical openEuler versions here. Although these versions are currently out of
+                        maintenance, they can be downloaded for use.</p>
+                    <p>To download the latest openEuler versions, click
+                        <a href="https://repo.openeuler.org/">here</a>.</p>
+                    <p>If you have any question, please <a href="mailto:infra@openeuler.sh">contact us</a>.</p>
+                </div>
+                <div class="image">
+                    <h1>openEuler Repo</h1>
+                    <img src="/fancySource/img/repo-banner.png" alt="" />
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>
+    <h1>Index of

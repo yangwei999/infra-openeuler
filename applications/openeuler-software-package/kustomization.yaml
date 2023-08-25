@@ -1,0 +1,12 @@
+resources:
+- namespace.yaml
+- secret.yaml
+- server
+- website
+- message
+- gitee-robot
+- github-server
+- hook-delivery
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: openeuler-software-pkg

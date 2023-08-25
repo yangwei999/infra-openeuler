@@ -1,0 +1,29 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/copr/backend
+  newTag: v1.0.20230606204054
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/copr/backend_httpd
+  newTag: v1.0.20230527200334
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/copr/distgit
+  newTag: v1.0.20230606160306
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/copr/frontend
+  newTag: v1.0.20230817180124
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/copr/keygen-signd
+  newTag: v1.0.20230527201236
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/copr/resalloc
+  newTag: v1.0.20230804113305
+kind: Kustomization
+namespace: fedora-copr-prod
+resources:
+- namespace.yaml
+- frontend.yaml
+- keygen.yaml
+- distgit.yaml
+- resalloc.yaml
+- copr-backend.yaml
+- secrets.yaml
+- pvc.yaml
+- resalloc-rbac.yaml
+- redis.yaml
+- configmap.yaml
+- cronjob.yaml
