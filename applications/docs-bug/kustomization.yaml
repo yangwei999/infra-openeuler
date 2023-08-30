@@ -9,4 +9,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/docs-bug-web-ui
-  newTag: 47df1988910681e2107b4344e0d257f9891ed6071693384200
+  newTag: 7fe66987c1716ee3e828549677aaa9eb62e94b4c1693385414
