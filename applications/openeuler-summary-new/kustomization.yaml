@@ -7,6 +7,7 @@ resources:
 - openeuler-summary-service.yaml
 - oauth-proxy.yaml
 - namespace.yaml
+- tls.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/summary
   newTag: v1.0.20221231004946

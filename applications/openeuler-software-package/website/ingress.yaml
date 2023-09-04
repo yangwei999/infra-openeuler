@@ -3,14 +3,13 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: letsencrypt-prod
   name: website-ingress
   namespace: openeuler-software-pkg
 spec:
   tls:
     - hosts:
         - software-pkg.openeuler.org
-      secretName: website-tls
+      secretName: openeuler-org-tls
   rules:
     - host: software-pkg.openeuler.org
       http:

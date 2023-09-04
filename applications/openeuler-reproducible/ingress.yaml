@@ -4,14 +4,13 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: letsencrypt-prod
   name: openeuler-reproducible-ingress
   namespace: openeuler-reproducible
 spec:
   tls:
     - hosts:
         - reproducible-builds.openeuler.org
-      secretName: openeuler-reproducible-tls
+      secretName: openeuler-org-tls
   rules:
     - host: reproducible-builds.openeuler.org
       http:
@@ -27,14 +26,13 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: letsencrypt-prod
   name: openeuler-reproducible-server-ingress
   namespace: openeuler-reproducible
 spec:
   tls:
     - hosts:
         - reproducible-builds.openeuler.org
-      secretName: openeuler-reproducible-server-tls
+      secretName: openeuler-org-tls
   rules:
     - host: reproducible-builds.openeuler.org
       http:

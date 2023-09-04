@@ -3,14 +3,13 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: letsencrypt-prod
   name: qa-robot-ingress
   namespace: qa-robot
 spec:
   tls:
     - hosts:
         - qa-robot.openeuler.org
-      secretName: qa-robot-tls
+      secretName: qa-robot-openeuler-org-tls
   rules:
     - host: qa-robot.openeuler.org
       http:
