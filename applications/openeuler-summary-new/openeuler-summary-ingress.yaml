@@ -2,7 +2,6 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/server-snippet: |
       rewrite ^/zh/agreement_ch.html$      /agreement_ch.html redirect;
@@ -22,14 +21,13 @@ spec:
   tls:
   - hosts:
     - summary.openeuler.org
-    secretName: openeuler-summary-tls
+    secretName: openeuler-org-summary-tls
 
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/server-snippet: |
       rewrite ^/$                          /en/2022/ redirect;
@@ -50,4 +48,4 @@ spec:
   tls:
   - hosts:
     - summary-en.openeuler.org
-    secretName: openeuler-summary-en-tls
+    secretName: openeuler-org-summary-tls

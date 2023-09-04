@@ -4,7 +4,6 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/custom-http-errors: "400,500"
     nginx.ingress.kubernetes.io/server-snippet: |
       add_header X-Content-Type-Options "nosniff";
@@ -18,7 +17,7 @@ spec:
   tls:
     - hosts:
         - docs.openeuler.org
-      secretName: openeuler-website-docs-lts
+      secretName: openeuler-org-tls
   rules:
     - host: docs.openeuler.org
       http:

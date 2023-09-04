@@ -2,9 +2,10 @@
 apiVersion: secrets-manager.tuenti.io/v1alpha1
 kind: SecretDefinition
 metadata:
-  name: dailybuild-tls
+  name: openeuler-org-tls
+  namespace: openeuler-certificate-center
 spec:
-  name: dailybuild-tls
+  name: openeuler-org-tls
   keysMap:
     ca.crt:
       path: secrets/data/openeuler/openeuler-org-tls
