@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: signatrust-control-server
+  namespace: openeuler-signatrust
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: signatrust-control-server
+  template:
+    metadata:
+      labels:
+        component: signatrust-control-server
+    spec:
+      containers:
+      - command:
+        - /app/control-server
+        env:
+        - name: RUST_LOG
+          value: debug
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/signatrust/signatrust-control-server:518a21b4de368ef502eaa7339c70a13dbead1edc
+        imagePullPolicy: Always
+        name: signatrust-server
+        ports:
+        - containerPort: 8080
+          name: http
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 4000m
+            memory: 4000Mi
+          requests:
+            cpu: 1000m
+            memory: 1000Mi
+        volumeMounts:
+        - mountPath: /app/config/server.toml
+          name: secret
+          subPath: control-server-toml-new
+        - mountPath: /signatrust/.data/certs/server/ca_root.pem
+          name: secret
+          subPath: ca-root-pem
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      initContainers:
+      - command:
+        - /bin/sh
+        - -c
+        - '# TODO: Use commit it instead of latest master
+
+          git clone https://gitee.com/openeuler/signatrust
+
+          cd signatrust
+
+          git checkout $CONTROL_SERVER_TAG
+
+          sqlx database create
+
+          sqlx migrate run
+
+          '
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              key: DATABASE_URL
+              name: signatrust-secrets
+        - name: CONTROL_SERVER_TAG
+          value: 99c6b0e1a3d187cbf21c362fc984488ace5ae620
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/signatrust/rust-sqlx:latest
+        name: prepare-table
+      volumes:
+      - name: secret
+        secret:
+          secretName: signatrust-secrets

@@ -1,0 +1,62 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: signatrust-client
+  namespace: openeuler-signatrust
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      component: signatrust-client
+  template:
+    metadata:
+      labels:
+        component: signatrust-client
+    spec:
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      containers:
+        - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/signatrust/signatrust-client:2b4707f18f50cba390cd23ad10c3b7f41f41ee89
+          imagePullPolicy: Always
+          name: signatrust-client
+          env:
+          - name: RUST_LOG
+            value: debug
+          resources:
+            requests:
+              cpu: 1000m
+              memory: 1000Mi
+            limits:
+              cpu: 2000m
+              memory: 2000Mi
+          command:
+          - /bin/sh
+          - -c
+          - |
+            mkdir -p /signatrust/.data/tempdir
+            sleep 100000000
+          volumeMounts:
+          - mountPath: /app/config/client.toml
+            name: config-volume
+            subPath: client.toml
+          - mountPath: /app/data/
+            name: client-volume
+          - mountPath: /signatrust/.data/certs/server/server.crt
+            name: secret
+            subPath: server-crt
+          - mountPath: /signatrust/.data/certs/server/server.key
+            name: secret
+            subPath: server-key
+      volumes:
+      - name: config-volume
+        configMap:
+          name: signatrust-client-configmap
+      - name: client-volume
+        persistentVolumeClaim:
+          claimName: client-volume
+      - name: secret
+        secret:
+          secretName: signatrust-secrets

@@ -1,0 +1,10 @@
+resources:
+- secret.yaml
+- namespace.yaml
+- client
+- control-server
+- data-server
+- app
+namespace: openeuler-signatrust
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
