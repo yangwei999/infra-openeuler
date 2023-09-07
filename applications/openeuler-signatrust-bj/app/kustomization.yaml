@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+commonAnnotations:
+  kubernetes.ops.cluster: openeuler-cn4-jenkins-cluster
+  kubernetes.ops.email: ""
+  kubernetes.ops.os.base: openeuler
+  kubernetes.ops.owner: yuchunao
+  kubernetes.ops.region: beijing
+kind: Kustomization
+namespace: openeuler-signatrust
+resources:
+- website-service.yaml
+- website-deployment.yaml
+- configmap.yaml
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/signatrust/signatrust-app
+  newTag: 02145d3682682f7737ef093bc8606e1753db5494
