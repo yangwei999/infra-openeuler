@@ -129,6 +129,11 @@ spec:
             secretKeyRef:
               name: discourse-secret
               key: sensitive_password
+        - name: UNICORN_SIDEKIQS
+          valueFrom:
+            secretKeyRef:
+              name: discourse-secret
+              key: unicorn_sidekiqs
         resources:
           requests:
             cpu: 1
