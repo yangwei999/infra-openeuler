@@ -13,9 +13,6 @@ spec:
       labels:
         component: signatrust-control-server
     spec:
-      nodeSelector:
-        usage: test
-        os.architecture: amd64
       containers:
       - command:
         - /app/control-server
@@ -86,9 +83,12 @@ spec:
               key: DATABASE_URL
               name: signatrust-secrets
         - name: CONTROL_SERVER_TAG
-          value: 3f632adb1a25c5bc06958bbc743ecbd303bbe1b3
+          value: c837428a1ea367d710b1d0c9ca6a855f8620f5cb
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/signatrust/rust-sqlx:latest
         name: prepare-table
+      nodeSelector:
+        os.architecture: amd64
+        usage: test
       volumes:
       - name: secret
         secret:
