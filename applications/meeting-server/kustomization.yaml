@@ -16,4 +16,4 @@ kind: Kustomization
 namespace: meetingserver
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/app-meeting-server
-  newTag: 7577a24eed439013a18b3ea7fb0e912a325c73ee
+  newTag: 2de9b33f409a45ca5a9bfa909a44370d99070f35
