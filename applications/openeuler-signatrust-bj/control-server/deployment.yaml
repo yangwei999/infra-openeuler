@@ -18,7 +18,7 @@ spec:
         - /app/control-server
         env:
         - name: RUST_LOG
-          value: debug
+          value: info
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/signatrust/signatrust-control-server:518a21b4de368ef502eaa7339c70a13dbead1edc
         imagePullPolicy: Always
         livenessProbe:

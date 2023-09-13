@@ -35,7 +35,7 @@ spec:
           protocol: TCP
         env:
         - name: RUST_LOG
-          value: debug
+          value: info
         volumeMounts:
         - mountPath: /app/config/server.toml
           name: secret
