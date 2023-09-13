@@ -27,7 +27,7 @@ spec:
         name: signatrust-client
         env:
         - name: RUST_LOG
-          value: debug
+          value: info
         resources:
           requests:
             cpu: 1000m
