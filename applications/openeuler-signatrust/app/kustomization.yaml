@@ -13,4 +13,4 @@ resources:
 - configmap.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/signatrust/signatrust-app
-  newTag: 2b4707f18f50cba390cd23ad10c3b7f41f41ee89
+  newTag: 03230052fa9876abb55fb0a124daef50e16d7bb9
