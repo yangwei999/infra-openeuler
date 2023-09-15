@@ -62,6 +62,8 @@ spec:
           value: csi-disk
         - name: BUILDER_PVC_PATH
           value: /var/lib/mock
+        - name: BUILDER_SECRET
+          value: /home/mockbuild/.ssh/id_backend.pub:copr-secrets:backend_id_rsa.pub
         - name: BUILDER_PVC_LABEL0
           value: failure-domain.beta.kubernetes.io/zone=cn-north-4a
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/copr/resalloc:v1.0.20230221100605
