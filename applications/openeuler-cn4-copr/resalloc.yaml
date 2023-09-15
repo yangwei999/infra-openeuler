@@ -56,6 +56,14 @@ spec:
           value: '360'
         - name: BUILDER_TYPE
           value: prod
+        - name: BUILDER_DISK_SIZE
+          value: 200Gi
+        - name: BUILDER_PVC_NAME
+          value: csi-disk
+        - name: BUILDER_PVC_PATH
+          value: /var/lib/mock
+        - name: BUILDER_PVC_LABEL0
+          value: failure-domain.beta.kubernetes.io/zone=cn-north-4a
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/copr/resalloc:v1.0.20230221100605
         imagePullPolicy: IfNotPresent
         livenessProbe:
