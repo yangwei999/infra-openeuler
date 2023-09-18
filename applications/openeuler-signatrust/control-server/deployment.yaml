@@ -66,7 +66,7 @@ spec:
               key: DATABASE_URL
               name: signatrust-secrets
         - name: CONTROL_SERVER_TAG
-          value: 03230052fa9876abb55fb0a124daef50e16d7bb9
+          value: 6fc7e10d01fb5723205399101965f0ae8071dd0d
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/signatrust/rust-sqlx:latest
         name: prepare-table
       volumes:
