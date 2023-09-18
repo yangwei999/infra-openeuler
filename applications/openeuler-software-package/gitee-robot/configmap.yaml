@@ -60,7 +60,6 @@ data:
       group_name: software-package
       topics:
         new_pkg: software_pkg_approved
-        community_event: openeuler-community
       message:
         topics_to_notify:
           ci_passed: software_pkg_initialized
