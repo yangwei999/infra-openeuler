@@ -14,7 +14,7 @@ spec:
         app: website
     spec:
       nodeSelector:
-        usage: test
+        infra: "true"
         os.architecture: amd64
       containers:
       - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/signatrust/signatrust-app:651b7b41f5edb92c8589b00c256d17e48d282132
