@@ -11,7 +11,7 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/copr/keygen-signd
   newTag: v1.0.20230921211428
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/copr/resalloc
-  newTag: v1.0.20230915174934
+  newTag: v1.0.20230921211808
 kind: Kustomization
 namespace: fedora-copr-prod
 resources:
