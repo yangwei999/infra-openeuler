@@ -11,3 +11,22 @@ spec:
   clusterIP: None
   selector:
     component: data-server
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: data-server-elb
+  namespace: openeuler-signatrust
+  annotations:
+    kubernetes.io/elb.class: union
+    kubernetes.io/elb.id: 9316412a-3a3a-457b-99f2-2ae0ae180b87
+    kubernetes.io/elb.lb-algorithm: ROUND_ROBIN
+spec:
+  ports:
+  - port: 8088
+    name: data-server
+    targetPort: 8088
+  selector:
+    component: data-server
+  type: LoadBalancer
