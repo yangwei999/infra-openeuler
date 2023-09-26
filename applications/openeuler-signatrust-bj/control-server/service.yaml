@@ -12,3 +12,23 @@ spec:
   selector:
     component: signatrust-control-server
   type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: control-server-elb
+  namespace: openeuler-signatrust
+  annotations:
+    kubernetes.io/elb.class: union
+    kubernetes.io/elb.id: ad2f12b4-cf71-4268-bd63-6e2c9e1fa5a2
+    kubernetes.io/elb.lb-algorithm: ROUND_ROBIN
+spec:
+  ports:
+    - name: http-port
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    component: signatrust-control-server
+  type: LoadBalancer
