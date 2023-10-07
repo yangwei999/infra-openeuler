@@ -105,3 +105,25 @@ spec:
   externalName: openeuler-service.archives-repo.svc.cluster.local
   type: ExternalName
 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kubernetes.io/elb.class: union
+    kubernetes.io/elb.id: 03caf763-a98e-4cb5-8590-de834b9a359d
+    kubernetes.io/elb.lb-algorithm: ROUND_ROBIN
+  name: openeuler-service-for-vpc-download
+  namespace: repo2
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - name: http
+    port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: repo-nginx-pod
+  sessionAffinity: None
+  type: LoadBalancer
+
