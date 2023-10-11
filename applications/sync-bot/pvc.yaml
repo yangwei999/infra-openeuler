@@ -13,4 +13,3 @@ spec:
       storage: 300Gi
   storageClassName: csi-disk
   volumeMode: Filesystem
-  volumeName: pv-evs-sync-bot-from-old-cluster
