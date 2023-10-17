@@ -5,7 +5,7 @@ metadata:
   name: doc-search
   namespace: openeuler-doc-search
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -16,9 +16,23 @@ spec:
       app: doc-search
   template:
     metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: 'true'
+        vault.hashicorp.com/role: 'search'
+        vault.hashicorp.com/agent-inject-secret-application.yml: 'internal/data/openeuler/search'
+        vault.hashicorp.com/agent-pre-populate-only: "true"
+        vault.hashicorp.com/agent-inject-perms-application.yml: "0644"
+        vault.hashicorp.com/agent-run-as-user: "1001"
+        vault.hashicorp.com/agent-inject-template-application.yml: |  
+          {{- with secret "internal/data/openeuler/search" -}}  
+          {{ .Data.data.application }}
+          {{- end }}
       labels:
         app: doc-search
     spec:
+      serviceAccount: search
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
       containers:
       - name: doc-search
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/doc-search:b5aca110424dbfb67c653ed94969e42695bd7501
@@ -46,78 +60,45 @@ spec:
             port: 8080
           timeoutSeconds: 5
         env:
-        - name: eshost
+        - name: X_ARMOR_BACKEND_TENANT_ID
           valueFrom:
             secretKeyRef:
               name: doc-search-secrets
-              key: host
-        - name: esusername
+              key: xarmor_tenant_id
+        - name: X_ARMOR_BACKEND_APP_ID
           valueFrom:
             secretKeyRef:
               name: doc-search-secrets
-              key: username
-        - name: espassword
+              key: xarmor_app_id
+        - name: X_ARMOR_BACKEND_APP_TOKEN
           valueFrom:
             secretKeyRef:
               name: doc-search-secrets
-              key: password
-        - name: esport
+              key: xarmor_backend_app_token
+        - name: X_ARMOR_SECURITY_ENABLE
           valueFrom:
             secretKeyRef:
               name: doc-search-secrets
-              key: port
-        - name: searchsystem
+              key: xarmor_security_enable
+        - name: X_ARMOR_SECURITY_ROOT_PASSWORD_0
           valueFrom:
             secretKeyRef:
               name: doc-search-secrets
-              key: system
-        - name: depp
+              key: xarmor_security_root_password
+        - name: X_ARMOR_SECURITY_WORK_PASSWORD_0
           valueFrom:
             secretKeyRef:
               name: doc-search-secrets
-              key: depp
-        - name: teshost
+              key: xarmor_secutiry_work_password
+        - name: X_ARMOR_BACKEND_BACKEND_URL
           valueFrom:
             secretKeyRef:
               name: doc-search-secrets
-              key: teshost
-        - name: tesport
-          valueFrom:
-            secretKeyRef:
-              name: doc-search-secrets
-              key: tesport
-        - name: tesusername
-          valueFrom:
-            secretKeyRef:
-              name: doc-search-secrets
-              key: tesusername
-        - name: tespassword
-          valueFrom:
-            secretKeyRef:
-              name: doc-search-secrets
-              key: tespassword
-        - name: kneed
-          valueFrom:
-            secretKeyRef:
-              name: doc-search-secrets
-              key: kneed
-        - name: kbootstrap
-          valueFrom:
-            secretKeyRef:
-              name: doc-search-secrets
-              key: kbootstrap
-        - name: kgroup
-          valueFrom:
-            secretKeyRef:
-              name: doc-search-secrets
-              key: kgroup
-        - name: FORUMDOMAIM
-          valueFrom:
-            secretKeyRef:
-              name: doc-search-secrets
-              key: FORUMDOMAIM
+              key: xarmor_backend_url
         - name: APPLICATION_PATH
-          value: "/home/easysearch/EaseSearch/target/classes/application.yml"
+          value: "/vault/secrets/application.yml"
+        - name: FORUMDOMAIM
+          value: "https://forum.openeuler.org"
         - name: SERVICE_URL
           value: "https://gitee.com/opensourceway/om-data/raw/master/src/openeuler/server.yaml"
 
