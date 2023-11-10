@@ -25,6 +25,10 @@ data:
     watch:
       pkg_org: src-openeuler
       robot_token: "${OPENEULER_ROBOT_TOKEN}"
+      community_org: openeuler
+      community_repo: community
+      ci_success_label: ci_successful
+      ci_failure_label: ci_failed
     community:
       pkg_org: src-openeuler
       robot_token: "${OPENEULER_ROBOT_TOKEN}"
