@@ -34,12 +34,12 @@ data:
         translation_comment: translation_comment
         operation_log: operation_log
     sig:
-      read_url: https://omapi.osinfra.cn/query/sig/scoreAll?community=openeuler
+      read_url: https://dsapi.osinfra.cn/query/sig/scoreAll?community=openeuler
       interval: 1
     pkg_manager:
       access_token: "${ACCESS_TOKEN}"
       existing_pkgs:
-        meta_data_endpoint: https://omapi.osinfra.cn/query/sig/info?community=openeuler&search=fuzzy&repo=src-openeuler/
+        meta_data_endpoint: https://dsapi.osinfra.cn/query/sig/info?community=openeuler&search=fuzzy&repo=src-openeuler/
         org_of_pkg_repo: src-openeuler
         default_info:
           platform: gitee
