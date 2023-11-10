@@ -1,0 +1,49 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: signatrust-data-server-without-mtls
+  namespace: openeuler-signatrust
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: data-server-without-mtls
+  template:
+    metadata:
+      labels:
+        component: data-server-without-mtls
+    spec:
+      nodeSelector:
+        infra: "true"
+        os.architecture: amd64
+      containers:
+      - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/signatrust/signatrust-data-server:518a21b4de368ef502eaa7339c70a13dbead1edc
+        imagePullPolicy: Always
+        name: data-server
+        command: ["/app/data-server"]
+        resources:
+          requests:
+            cpu: 4000m
+            memory: 4000Mi
+          limits:
+            cpu: 4000m
+            memory: 4000Mi
+        ports:
+        - containerPort: 8088
+          name: http
+          protocol: TCP
+        env:
+        - name: RUST_LOG
+          value: info
+        volumeMounts:
+        - mountPath: /app/config/server.toml
+          name: secret
+          subPath: control-server-toml-without-mtls
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+      volumes:
+      - name: secret
+        secret:
+          secretName: signatrust-secrets

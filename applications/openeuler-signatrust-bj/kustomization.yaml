@@ -5,6 +5,7 @@ resources:
 - control-server
 - data-server
 - app
+- data-server-without-mtls
 namespace: openeuler-signatrust
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
