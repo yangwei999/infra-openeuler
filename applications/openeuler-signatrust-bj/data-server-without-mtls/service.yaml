@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: data-server-without-mtls-headless
+  namespace: openeuler-signatrust
+spec:
+  ports:
+  - port: 8088
+    name: data-server
+    targetPort: 8088
+  clusterIP: None
+  selector:
+    component: data-server-without-mtls
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: data-server-without-mtls-elb
+  namespace: openeuler-signatrust
+  annotations:
+    kubernetes.io/elb.class: union
+    kubernetes.io/elb.id: fb160bbb-8e0e-40cd-b42a-9aa3eedead23
+    kubernetes.io/elb.lb-algorithm: ROUND_ROBIN
+spec:
+  ports:
+  - port: 8088
+    name: data-server
+    targetPort: 8088
+  selector:
+    component: data-server-without-mtls
+  type: LoadBalancer
