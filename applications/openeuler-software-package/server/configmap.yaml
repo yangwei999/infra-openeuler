@@ -26,9 +26,9 @@ data:
         abandoned_software_pkg: software_pkg_abandoned
         already_existed_software_pkg: software_pkg_already_existed
     middleware:
-      user_info_url: https://omapi.osinfra.cn/oneid/personal/center/user
+      user_info_url: https://dsapi.osinfra.cn/oneid/personal/center/user
     maintainer:
-      read_url: https://omapi.osinfra.cn/query/sig/info?community=openeuler
+      read_url: https://dsapi.osinfra.cn/query/sig/info?community=openeuler
       interval: 1
     translation:
       access_key: "${OBS_AK}"
@@ -43,12 +43,12 @@ data:
       region: cn-north-4
       iam_endpoint: https://iam.cn-north-4.myhuaweicloud.com
     sig:
-      read_url: https://omapi.osinfra.cn/query/sig/scoreAll?community=openeuler
+      read_url: https://dsapi.osinfra.cn/query/sig/scoreAll?community=openeuler
       interval: 1
     pkg_manager:
       access_token: "${ACCESS_TOKEN}"
       existing_pkgs:
-        meta_data_endpoint: https://omapi.osinfra.cn/query/sig/info?community=openeuler&search=fuzzy&repo=src-openeuler/
+        meta_data_endpoint: https://dsapi.osinfra.cn/query/sig/info?community=openeuler&search=fuzzy&repo=src-openeuler/
         org_of_pkg_repo: src-openeuler
         default_info:
           platform: gitee
