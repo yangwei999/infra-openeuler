@@ -2,6 +2,7 @@ resources:
   - ingress.yaml
   - namespace.yaml
   - service.yaml
+  - secret.yaml
 commonLabels:
   app: openlookeng-repo
 commonAnnotations:

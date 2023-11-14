@@ -25,3 +25,31 @@ spec:
               serviceName: openlookeng-website-docs-service
               servicePort: 80
             path: /
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/server-snippet: |
+      add_header X-Content-Type-Options "nosniff";
+      add_header X-XSS-Protection "1; mode=block";
+      add_header X-Frame-Options "DENY";
+      add_header Cache-Control "no-cache";
+      add_header Pragma "no-cache";
+  name: openlookeng-website-docs-osinfra-ingress
+  namespace: openlookeng-docs
+spec:
+  tls:
+    - hosts:
+        - docs-openlookeng.osinfra.cn
+      secretName: openlookeng-docs-osinfra-tls
+  rules:
+    - host: docs-openlookeng.osinfra.cn
+      http:
+        paths:
+          - backend:
+              serviceName: openlookeng-website-docs-service
+              servicePort: 80
+            path: /
