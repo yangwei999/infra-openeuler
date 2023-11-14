@@ -24,6 +24,9 @@ spec:
       containers:
       - name: server
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/easyeditor/server:v1.0.20230406163055
+        env:
+        - name: APPLICATION_PATH
+          value: "/var/lib/easyedit/application.yaml"
         resources:
           requests:
             cpu: 1000m
