@@ -26,7 +26,7 @@ data:
         abandoned_software_pkg: software_pkg_abandoned
         already_existed_software_pkg: software_pkg_already_existed
     middleware:
-      user_info_url: https://dsapi.osinfra.cn/oneid/personal/center/user
+      user_info_url: https://omapi.osinfra.cn/oneid/personal/center/user
     maintainer:
       read_url: https://dsapi.osinfra.cn/query/sig/info?community=openeuler
       interval: 1
