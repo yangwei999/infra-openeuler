@@ -10,7 +10,7 @@ spec:
     matchLabels:
       app: mongodb-service
   serviceName: mongodb-service
-  replicas: 1
+  replicas: 0
   template:
     metadata:
       labels:

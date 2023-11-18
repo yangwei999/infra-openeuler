@@ -4,7 +4,7 @@ metadata:
   name: api-cve
   namespace: api-cve
 spec:
-  replicas: 2
+  replicas: 0
   strategy:
     rollingUpdate:
       maxUnavailable: 1
