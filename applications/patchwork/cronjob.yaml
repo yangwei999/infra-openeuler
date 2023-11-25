@@ -159,7 +159,7 @@ spec:
           volumes:
             - name: patchwork-file-volume
               persistentVolumeClaim:
-                claimName: patchwork-file-data
+                claimName: patchwork-share-disk-volume
 ---
 apiVersion: batch/v1beta1
 kind: CronJob
@@ -319,4 +319,4 @@ spec:
           volumes:
             - name: patchwork-file-volume
               persistentVolumeClaim:
-                claimName: patchwork-file-data
+                claimName: patchwork-share-disk-volume
