@@ -22,6 +22,9 @@ spec:
     spec:
       imagePullSecrets:
       - name: huawei-swr-image-pull-secret
+      nodeSelector:
+        copr: prod
+        os.architecture: amd64
       containers:
         - name: patchwork
           image: swr.cn-north-4.myhuaweicloud.com/opensourceway/patchwork/patchwork:main-f3d54a3
@@ -192,4 +195,4 @@ spec:
       volumes:
         - name: patchwork-file-volume
           persistentVolumeClaim:
-            claimName: patchwork-file-data
+            claimName: patchwork-share-disk-volume
