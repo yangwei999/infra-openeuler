@@ -1,14 +1,24 @@
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: patchwork-file-data
+  annotations:
+    everest.io/disk-volume-type: ESSD
+    pv.kubernetes.io/bind-completed: "yes"
+    pv.kubernetes.io/bound-by-controller: "yes"
+    volume.beta.kubernetes.io/storage-provisioner: everest-csi-provisioner
+  labels:
+    failure-domain.beta.kubernetes.io/region: cn-north-4
+    failure-domain.beta.kubernetes.io/zone: cn-north-4a
+  name: patchwork-share-disk-volume
   namespace: patchwork
 spec:
   accessModes:
-    - ReadWriteMany
+  - ReadWriteOnce
   resources:
     requests:
-      storage: 12Gi
-  storageClassName: csi-nas
+      storage: 50Gi
+  storageClassName: csi-disk
   volumeMode: Filesystem
+  volumeName: pvc-357308f1-8ef4-4677-a88a-e5460c15ea59
 
