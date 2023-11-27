@@ -1,0 +1,411 @@
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: updating-openeuler-sigs
+  namespace: openeuler-meetingserver
+spec:
+  schedule: "0 * * * *"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 180
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            vault.hashicorp.com/agent-inject: 'true'
+            vault.hashicorp.com/role: 'openeuler-meeting'
+            vault.hashicorp.com/agent-inject-perms-secrets.yaml: "0600"
+            vault.hashicorp.com/agent-inject-perms-ca.pem: "0600"
+            vault.hashicorp.com/agent-run-as-user: "1000"
+            vault.hashicorp.com/agent-inject-secret-secrets.yaml: 'internal/data/mindspore/openeuler-meeting'
+            vault.hashicorp.com/agent-pre-populate-only: "true"
+            vault.hashicorp.com/agent-inject-template-secrets.yaml: |  
+              {{- with secret "internal/data/mindspore/openeuler-meeting" -}}  
+              {{ .Data.data.config }}
+              {{- end }}
+            vault.hashicorp.com/agent-inject-secret-ca.pem: 'internal/data/mindspore/openeuler-meeting'
+            vault.hashicorp.com/agent-inject-template-ca.pem: |  
+              {{- with secret "internal/data/mindspore/openeuler-meeting" -}}  
+              {{ .Data.data.MysqlCA }}
+              {{- end }}
+        spec:
+          serviceAccountName: openeuler-meeting
+          imagePullSecrets:
+          - name: huawei-swr-image-pull-secret
+          restartPolicy: OnFailure
+          containers:
+            - name: meeting-server
+              image: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/openeuler/meetingserver:master-6148c8
+              env:
+              - name: TZ
+                value: Asia/Shanghai
+              - name: CONFIG_PATH
+                value: /vault/secrets/secrets.yaml
+              - name: MYSQL_TLS_PEM_PATH
+                value: /vault/secrets/ca.pem
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  python manage.py genegroup
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: upload-meeting-video
+  namespace: openeuler-meetingserver
+spec:
+  schedule: "0 * * * *"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 180
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            vault.hashicorp.com/agent-inject: 'true'
+            vault.hashicorp.com/role: 'openeuler-meeting'
+            vault.hashicorp.com/agent-inject-perms-secrets.yaml: "0600"
+            vault.hashicorp.com/agent-inject-perms-ca.pem: "0600"
+            vault.hashicorp.com/agent-run-as-user: "1000"
+            vault.hashicorp.com/agent-inject-secret-secrets.yaml: 'internal/data/mindspore/openeuler-meeting'
+            vault.hashicorp.com/agent-pre-populate-only: "true"
+            vault.hashicorp.com/agent-inject-template-secrets.yaml: |  
+              {{- with secret "internal/data/mindspore/openeuler-meeting" -}}  
+              {{ .Data.data.config }}
+              {{- end }}
+            vault.hashicorp.com/agent-inject-secret-ca.pem: 'internal/data/mindspore/openeuler-meeting'
+            vault.hashicorp.com/agent-inject-template-ca.pem: |  
+              {{- with secret "internal/data/mindspore/openeuler-meeting" -}}  
+              {{ .Data.data.MysqlCA }}
+              {{- end }}
+        spec:
+          serviceAccountName: openeuler-meeting
+          imagePullSecrets:
+          - name: huawei-swr-image-pull-secret
+          restartPolicy: OnFailure
+          containers:
+            - name: meeting-server
+              image: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/openeuler/meetingserver:master-6148c8
+              env:
+              - name: TZ
+                value: Asia/Shanghai
+              - name: CONFIG_PATH
+                value: /vault/secrets/secrets.yaml
+              - name: MYSQL_TLS_PEM_PATH
+                value: /vault/secrets/ca.pem
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  python manage.py handle_recordings
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: upload-to-bilibili
+  namespace: openeuler-meetingserver
+spec:
+  schedule: "10 * * * *"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 180
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            vault.hashicorp.com/agent-inject: 'true'
+            vault.hashicorp.com/role: 'openeuler-meeting'
+            vault.hashicorp.com/agent-inject-perms-secrets.yaml: "0600"
+            vault.hashicorp.com/agent-inject-perms-ca.pem: "0600"
+            vault.hashicorp.com/agent-run-as-user: "1000"
+            vault.hashicorp.com/agent-inject-secret-secrets.yaml: 'internal/data/mindspore/openeuler-meeting'
+            vault.hashicorp.com/agent-pre-populate-only: "true"
+            vault.hashicorp.com/agent-inject-template-secrets.yaml: |  
+              {{- with secret "internal/data/mindspore/openeuler-meeting" -}}  
+              {{ .Data.data.config }}
+              {{- end }}
+            vault.hashicorp.com/agent-inject-secret-ca.pem: 'internal/data/mindspore/openeuler-meeting'
+            vault.hashicorp.com/agent-inject-template-ca.pem: |  
+              {{- with secret "internal/data/mindspore/openeuler-meeting" -}}  
+              {{ .Data.data.MysqlCA }}
+              {{- end }}
+        spec:
+          serviceAccountName: openeuler-meeting
+          imagePullSecrets:
+          - name: huawei-swr-image-pull-secret
+          restartPolicy: OnFailure
+          containers:
+            - name: meeting-server
+              image: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/openeuler/meetingserver:master-6148c8
+              env:
+              - name: TZ
+                value: Asia/Shanghai
+              - name: CONFIG_PATH
+                value: /vault/secrets/secrets.yaml
+              - name: MYSQL_TLS_PEM_PATH
+                value: /vault/secrets/ca.pem
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  python manage.py upload_to_bilibili
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: check-examination
+  namespace: openeuler-meetingserver
+spec:
+  schedule: "20 * * * *"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 180
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            vault.hashicorp.com/agent-inject: 'true'
+            vault.hashicorp.com/role: 'openeuler-meeting'
+            vault.hashicorp.com/agent-inject-perms-secrets.yaml: "0600"
+            vault.hashicorp.com/agent-inject-perms-ca.pem: "0600"
+            vault.hashicorp.com/agent-run-as-user: "1000"
+            vault.hashicorp.com/agent-inject-secret-secrets.yaml: 'internal/data/mindspore/openeuler-meeting'
+            vault.hashicorp.com/agent-pre-populate-only: "true"
+            vault.hashicorp.com/agent-inject-template-secrets.yaml: |  
+              {{- with secret "internal/data/mindspore/openeuler-meeting" -}}  
+              {{ .Data.data.config }}
+              {{- end }}
+            vault.hashicorp.com/agent-inject-secret-ca.pem: 'internal/data/mindspore/openeuler-meeting'
+            vault.hashicorp.com/agent-inject-template-ca.pem: |  
+              {{- with secret "internal/data/mindspore/openeuler-meeting" -}}  
+              {{ .Data.data.MysqlCA }}
+              {{- end }}
+        spec:
+          serviceAccountName: openeuler-meeting
+          imagePullSecrets:
+          - name: huawei-swr-image-pull-secret
+          restartPolicy: OnFailure
+          containers:
+            - name: meeting-server
+              image: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/openeuler/meetingserver:master-6148c8
+              env:
+              - name: TZ
+                value: Asia/Shanghai
+              - name: CONFIG_PATH
+                value: /vault/secrets/secrets.yaml
+              - name: MYSQL_TLS_PEM_PATH
+                value: /vault/secrets/ca.pem
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  python manage.py check_examination
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: update-activity-status
+  namespace: openeuler-meetingserver
+spec:
+  schedule: "0 * * * *"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 180
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            vault.hashicorp.com/agent-inject: 'true'
+            vault.hashicorp.com/role: 'openeuler-meeting'
+            vault.hashicorp.com/agent-inject-perms-secrets.yaml: "0600"
+            vault.hashicorp.com/agent-inject-perms-ca.pem: "0600"
+            vault.hashicorp.com/agent-run-as-user: "1000"
+            vault.hashicorp.com/agent-inject-secret-secrets.yaml: 'internal/data/mindspore/openeuler-meeting'
+            vault.hashicorp.com/agent-pre-populate-only: "true"
+            vault.hashicorp.com/agent-inject-template-secrets.yaml: |  
+              {{- with secret "internal/data/mindspore/openeuler-meeting" -}}  
+              {{ .Data.data.config }}
+              {{- end }}
+            vault.hashicorp.com/agent-inject-secret-ca.pem: 'internal/data/mindspore/openeuler-meeting'
+            vault.hashicorp.com/agent-inject-template-ca.pem: |  
+              {{- with secret "internal/data/mindspore/openeuler-meeting" -}}  
+              {{ .Data.data.MysqlCA }}
+              {{- end }}
+        spec:
+          serviceAccountName: openeuler-meeting
+          imagePullSecrets:
+          - name: huawei-swr-image-pull-secret
+          restartPolicy: OnFailure
+          containers:
+            - name: meeting-server
+              image: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/openeuler/meetingserver:master-6148c8
+              env:
+              - name: TZ
+                value: Asia/Shanghai
+              - name: CONFIG_PATH
+                value: /vault/secrets/secrets.yaml
+              - name: MYSQL_TLS_PEM_PATH
+                value: /vault/secrets/ca.pem
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  python manage.py update_activity_status
+
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: check-privacy-policy-cronjob
+  namespace: openeuler-meetingserver
+spec:
+  schedule: "*/10 * * * *"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 180
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            vault.hashicorp.com/agent-inject: 'true'
+            vault.hashicorp.com/role: 'openeuler-meeting'
+            vault.hashicorp.com/agent-inject-perms-secrets.yaml: "0600"
+            vault.hashicorp.com/agent-inject-perms-ca.pem: "0600"
+            vault.hashicorp.com/agent-run-as-user: "1000"
+            vault.hashicorp.com/agent-inject-secret-secrets.yaml: 'internal/data/mindspore/openeuler-meeting'
+            vault.hashicorp.com/agent-pre-populate-only: "true"
+            vault.hashicorp.com/agent-inject-template-secrets.yaml: |  
+              {{- with secret "internal/data/mindspore/openeuler-meeting" -}}  
+              {{ .Data.data.config }}
+              {{- end }}
+            vault.hashicorp.com/agent-inject-secret-ca.pem: 'internal/data/mindspore/openeuler-meeting'
+            vault.hashicorp.com/agent-inject-template-ca.pem: |  
+              {{- with secret "internal/data/mindspore/openeuler-meeting" -}}  
+              {{ .Data.data.MysqlCA }}
+              {{- end }}
+        spec:
+          serviceAccountName: openeuler-meeting
+          imagePullSecrets:
+          - name: huawei-swr-image-pull-secret
+          restartPolicy: Never
+          containers:
+          - name: meeting-server
+            image: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/openeuler/meetingserver:master-6148c8
+            env:
+            - name: TZ
+              value: Asia/Shanghai
+            - name: CONFIG_PATH
+              value: /vault/secrets/secrets.yaml
+            - name: MYSQL_TLS_PEM_PATH
+              value: /vault/secrets/ca.pem
+            command:
+              - /bin/sh
+              - -c
+              - |
+                python manage.py check_privacy_policy_update
+
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: sendmessage-cronjob
+  namespace: openeuler-meetingserver
+spec:
+  schedule: "*/10 * * * *"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 180
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            vault.hashicorp.com/agent-inject: 'true'
+            vault.hashicorp.com/role: 'openeuler-meeting'
+            vault.hashicorp.com/agent-inject-perms-secrets.yaml: "0600"
+            vault.hashicorp.com/agent-inject-perms-ca.pem: "0600"
+            vault.hashicorp.com/agent-run-as-user: "1000"
+            vault.hashicorp.com/agent-inject-secret-secrets.yaml: 'internal/data/mindspore/openeuler-meeting'
+            vault.hashicorp.com/agent-pre-populate-only: "true"
+            vault.hashicorp.com/agent-inject-template-secrets.yaml: |  
+              {{- with secret "internal/data/mindspore/openeuler-meeting" -}}  
+              {{ .Data.data.config }}
+              {{- end }}
+            vault.hashicorp.com/agent-inject-secret-ca.pem: 'internal/data/mindspore/openeuler-meeting'
+            vault.hashicorp.com/agent-inject-template-ca.pem: |  
+              {{- with secret "internal/data/mindspore/openeuler-meeting" -}}  
+              {{ .Data.data.MysqlCA }}
+              {{- end }}
+        spec:
+          serviceAccountName: openeuler-meeting
+          imagePullSecrets:
+          - name: huawei-swr-image-pull-secret
+          restartPolicy: Never
+          containers:
+          - name: meeting-server
+            image: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/openeuler/meetingserver:master-6148c8
+            env:
+            - name: TZ
+              value: Asia/Shanghai
+            - name: CONFIG_PATH
+              value: /vault/secrets/secrets.yaml
+            - name: MYSQL_TLS_PEM_PATH
+              value: /vault/secrets/ca.pem
+            command:
+              - /bin/sh
+              - -c
+              - |
+                python manage.py sendmessages
+
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: clean-logoff-user-cronjob
+  namespace: openeuler-meetingserver
+spec:
+  schedule: "0 * * * *"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 180
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          annotations:
+            vault.hashicorp.com/agent-inject: 'true'
+            vault.hashicorp.com/role: 'openeuler-meeting'
+            vault.hashicorp.com/agent-inject-perms-secrets.yaml: "0600"
+            vault.hashicorp.com/agent-inject-perms-ca.pem: "0600"
+            vault.hashicorp.com/agent-run-as-user: "1000"
+            vault.hashicorp.com/agent-inject-secret-secrets.yaml: 'internal/data/mindspore/openeuler-meeting'
+            vault.hashicorp.com/agent-pre-populate-only: "true"
+            vault.hashicorp.com/agent-inject-template-secrets.yaml: |  
+              {{- with secret "internal/data/mindspore/openeuler-meeting" -}}  
+              {{ .Data.data.config }}
+              {{- end }}
+            vault.hashicorp.com/agent-inject-secret-ca.pem: 'internal/data/mindspore/openeuler-meeting'
+            vault.hashicorp.com/agent-inject-template-ca.pem: |  
+              {{- with secret "internal/data/mindspore/openeuler-meeting" -}}  
+              {{ .Data.data.MysqlCA }}
+              {{- end }}
+        spec:
+          serviceAccountName: openeuler-meeting
+          imagePullSecrets:
+          - name: huawei-swr-image-pull-secret
+          restartPolicy: Never
+          containers:
+          - name: meeting-server
+            image: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/openeuler/meetingserver:master-6148c8
+            env:
+            - name: TZ
+              value: Asia/Shanghai
+            - name: CONFIG_PATH
+              value: /vault/secrets/secrets.yaml
+            - name: MYSQL_TLS_PEM_PATH
+              value: /vault/secrets/ca.pem
+            command:
+              - /bin/sh
+              - -c
+              - |
+                python manage.py clean_logoff_user

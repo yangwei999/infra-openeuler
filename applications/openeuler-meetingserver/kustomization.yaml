@@ -1,0 +1,20 @@
+resources:
+- service.yaml
+- deployment.yaml
+- namespace.yaml
+- cronjob.yaml
+- sa.yaml
+- secret.yaml
+- ingress.yaml
+namespace: openeuler-meetingserver
+commonAnnotations:
+  kubernetes.ops.cluster: mindspore-cn4-x86--cluster
+  kubernetes.ops.email: ""
+  kubernetes.ops.os.base: openeuler
+  kubernetes.ops.owner: liuqi
+  kubernetes.ops.region: bj
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+images:
+- name: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/openeuler/meetingserver
+  newTag: master-75ed14
