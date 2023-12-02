@@ -2,10 +2,7 @@ resources:
 - deployment.yaml
 - namespace.yaml
 - service.yaml
-- purge-cache.yaml
-- purge-secrets.yaml
-commonLabels:
-  app: openlookeng-website-frontend
+- sa.yaml
 commonAnnotations:
   email: 245462755@qq.com
   owner: zhengyuhang
