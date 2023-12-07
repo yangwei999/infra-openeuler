@@ -155,6 +155,16 @@ spec:
                     secretKeyRef:
                       key: OPENEULER_KERNEL_PASS
                       name: patchwork-secrets
+                - name: IMAP_SERVER
+                  valueFrom:
+                    secretKeyRef:
+                      key: IMAP_SERVER
+                      name: patchwork-secrets
+                - name: IMAP_PORT
+                  valueFrom:
+                    secretKeyRef:
+                      key: IMAP_PORT
+                      name: patchwork-secrets
               command:
                 - /bin/sh
                 - -c
@@ -317,6 +327,16 @@ spec:
                   valueFrom:
                     secretKeyRef:
                       key: OPENEULER_KERNEL_PASS
+                      name: patchwork-secrets
+                - name: IMAP_SERVER
+                  valueFrom:
+                    secretKeyRef:
+                      key: IMAP_SERVER
+                      name: patchwork-secrets
+                - name: IMAP_PORT
+                  valueFrom:
+                    secretKeyRef:
+                      key: IMAP_PORT
                       name: patchwork-secrets
               command:
                 - /bin/sh
