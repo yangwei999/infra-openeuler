@@ -101,4 +101,11 @@ spec:
           value: "https://forum.openeuler.org"
         - name: SERVICE_URL
           value: "https://gitee.com/opensourceway/om-data/raw/master/src/openeuler/server.yaml"
+        volumeMounts:
+        - mountPath: /opt/sql
+          name: sql-config-volume
+      volumes:
+      - name: sql-config-volume
+        persistentVolumeClaim:
+          claimName: openeuler-doc-search-es
 

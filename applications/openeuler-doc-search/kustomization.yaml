@@ -4,9 +4,13 @@ resources:
 - service.yaml
 - secrets.yaml
 - ingress.yaml
+- pvc.yaml
 commonAnnotations:
-  email: chenyang244@h-partners.com
-  owner: chenyang
+  kubernetes.ops.cluster: openeuler-hk-cluster
+  kubernetes.ops.email: ""
+  kubernetes.ops.os.base: openeuler
+  kubernetes.ops.owner: chenyang
+  kubernetes.ops.region: hk
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: openeuler-doc-search
