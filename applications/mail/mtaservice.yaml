@@ -35,9 +35,9 @@ metadata:
   name: mailman-exim4
   namespace: mail
 spec:
-  podManagementPolicy: OrderedReady
   replicas: 1
-  revisionHistoryLimit: 10
+  updateStrategy:
+    type: RollingUpdate
   selector:
     matchLabels:
       app: mail-suit-service
@@ -58,10 +58,10 @@ spec:
           name: mailman-core-data
         - mountPath: /var/log/exim/
           name: mailman-exim4-log
-        - mountPath: /etc/exim/passwd.ro
+        - mountPath: /etc/exim/passwd
           name: mailman-secrets
           subPath: exim4_credential
-        - mountPath: /etc/exim/dkim/openeuler.key.ro
+        - mountPath: /etc/exim/dkim/openeuler.key
           name: mta-dkim-secret
           subPath: dkim_key
         - name: exim4-tls-secret
@@ -77,11 +77,6 @@ spec:
         - /bin/sh
         - -c
         - |
-          cp /etc/exim/passwd.ro /etc/exim/passwd
-          cp /etc/exim/dkim/openeuler.key.ro /etc/exim/dkim/openeuler.key
-          chown root:exim /etc/exim/passwd /etc/exim/dkim/openeuler.key /etc/exim/ssl_pool/openeuler.org.crt /etc/exim/ssl_pool/openeuler.org.key
-          chmod 755 /etc/exim/passwd /etc/exim/dkim/openeuler.key /etc/exim/ssl_pool/openeuler.org.crt /etc/exim/ssl_pool/openeuler.org.key
-          mkdir -p /var/log/exim4
           exec tini -- exim -bd -v;
       volumes:
       - name: mailman-core-data
