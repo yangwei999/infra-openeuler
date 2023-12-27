@@ -10,4 +10,4 @@ resources:
 - tls.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/summary
-  newTag: v1.0.20221231004946
+  newTag: v1.0.20231227144710
