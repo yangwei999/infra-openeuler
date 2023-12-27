@@ -6,9 +6,30 @@ metadata:
 spec:
   ports:
   - name: http-port
-    port: 80
+    port: 8080
     protocol: TCP
     targetPort: 8080
   selector:
     app: openeuler-summary
   type: ClusterIP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kubernetes.io/elb.class: union
+    kubernetes.io/elb.id: 3fb0a419-150a-49a7-81a3-2e46e385f469
+    kubernetes.io/elb.lb-algorithm: ROUND_ROBIN
+  name: openeuler-summary-service-loadbalencer
+  namespace: openeuler-summary
+spec:
+  externalTrafficPolicy: Cluster
+  ports:
+  - name: httpport
+    port: 4180
+    protocol: TCP
+    targetPort: 4180
+  selector:
+    k8s-app: openeuler-oauth2-proxy
+  type: LoadBalancer
