@@ -9,5 +9,7 @@ resources:
 - tls.yaml
 - sa.yaml
 images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/oauth2-proxy
+  newTag: c94419415051abe9cf2988b22758fdc76cc8e750
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/summary
   newTag: v1.0.20231228173626
