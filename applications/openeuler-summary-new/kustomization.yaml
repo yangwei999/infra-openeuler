@@ -10,4 +10,4 @@ resources:
 - sa.yaml
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/summary
-  newTag: v1.0.20231227182300
+  newTag: v1.0.20231228140615
