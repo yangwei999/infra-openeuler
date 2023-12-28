@@ -144,10 +144,10 @@ spec:
         resources:
           limits:
             cpu: 4000m
-            memory: 10240Mi
+            memory: 15000Mi
           requests:
-            cpu: 2000m
-            memory: 2048Mi
+            cpu: 4000m
+            memory: 15000Mi
         livenessProbe:
           tcpSocket:
             port: 6379
