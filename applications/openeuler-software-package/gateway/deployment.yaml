@@ -23,7 +23,7 @@ spec:
       - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/software-package-gateway:main-7d3dc0
         imagePullPolicy: IfNotPresent
         args:
-        - --config-file=/vault/secrets/config.yml
+        - --config-file=/opt/app/config/config.yaml
         name: gateway
         resources:
           limits:
@@ -50,7 +50,7 @@ spec:
               key: robot_token
         volumeMounts:
         - mountPath: /opt/app/config/config.yaml
-          name: robot-configmap
+          name: gateway-configmap
           subPath: config.yaml
       volumes:
       - configMap:
