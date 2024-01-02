@@ -10,12 +10,12 @@ data:
       ci_repo:
         org: src-openeuler
         repo: software-package-server
-        owner: "weiwei123444"
+        owner: "I-am-a-robot"
         email: "${ROBOT_EMAIL}"
         token: "${ROBOT_TOKEN}"
-        link: https://gitee.com/weiwei123444/software-package-server.git
-        file_addr: "https://gitee.com/weiwei123444/software-package-server/raw/%s/%s"
-        lfs_file_addr: "https://gitee.com/weiwei123444/software-package-server/raw/%s/%s?lfs=1"
+        link: https://gitee.com/I-am-a-robot/software-package-server.git
+        file_addr: "https://gitee.com/I-am-a-robot/software-package-server/raw/%s/%s"
+        lfs_file_addr: "https://gitee.com/I-am-a-robot/software-package-server/raw/%s/%s?lfs=1"
     mongo:
       db:
         conn: "${MONGODB_CONN}"

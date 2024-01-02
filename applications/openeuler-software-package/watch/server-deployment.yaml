@@ -87,6 +87,11 @@ spec:
             secretKeyRef:
               name: software-pkg-secret
               key: om_app_secret
+        - name: OPENEULER_ROBOT_NAME
+          valueFrom:
+            secretKeyRef:
+              name: software-pkg-secret
+              key: openeuler_robot_name
         - name: ROBOT_TOKEN
           valueFrom:
             secretKeyRef:

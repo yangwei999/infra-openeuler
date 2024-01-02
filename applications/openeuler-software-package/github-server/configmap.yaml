@@ -11,7 +11,7 @@ data:
     message_server:
       group: software-package-github-server
       topics:
-        push_code: software_pkg_indirectly_approved
+        push_code: software_pkg_initialized
       message:
         topics_to_notify:
           pushed_code: software_pkg_repo_code_pushed
@@ -24,8 +24,8 @@ data:
         loop_times: 3 
       org: src-openeuler
       ci_repo:
-        repo: software-pkg
-        link: https://gitee.com/I-am-a-robot/software-pkg.git  
+        repo: software-package-server
+        link: https://gitee.com/I-am-a-robot/software-package-server.git
     om_api:
       app_id: "${APP_ID}"
       app_secret: "${APP_SECRET}"
