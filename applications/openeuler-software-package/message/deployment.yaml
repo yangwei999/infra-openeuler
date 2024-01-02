@@ -61,6 +61,11 @@ spec:
                 secretKeyRef:
                   name: software-pkg-secret
                   key: kafka_address
+            - name: KAFKA_VERSION
+              valueFrom:
+                secretKeyRef:
+                  name: software-pkg-secret
+                  key: kafka_version
             - name: ENCRYPTION_KEY
               valueFrom:
                 secretKeyRef:
@@ -86,6 +91,16 @@ spec:
                 secretKeyRef:
                   name: software-pkg-secret
                   key: robot_email
+            - name: MONGODB_CONN
+              valueFrom:
+                secretKeyRef:
+                  name: software-pkg-secret
+                  key: mongodb_conn
+            - name: MONGODB_DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: software-pkg-secret
+                  key: mongodb_db_name
           ports:
           - containerPort: 8000
             name: http

@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-deployment
+  namespace: openeuler-software-pkg
+spec:
+  selector:
+    matchLabels:
+      app: gateway
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      serviceAccount: openeuler-software-pkg
+      imagePullSecrets:
+      - name: huawei-swr-image-pull-secret
+      containers:
+      - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/software-package-gateway:main-7d3dc0
+        imagePullPolicy: IfNotPresent
+        args:
+        - --config-file=/opt/app/config/config.yaml
+        name: gateway
+        resources:
+          limits:
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 500m
+            memory: 500Mi
+        env:
+        - name: KAFKA_ADDRESS
+          valueFrom:
+            secretKeyRef:
+              name: software-pkg-secret
+              key: kafka_address
+        - name: KAFKA_VERSION
+          valueFrom:
+            secretKeyRef:
+              name: software-pkg-secret
+              key: kafka_version
+        - name: ROBOT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: software-pkg-secret
+              key: robot_token
+        volumeMounts:
+        - mountPath: /opt/app/config/config.yaml
+          name: gateway-configmap
+          subPath: config.yaml
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: gateway-configmap
+        name: gateway-configmap
+      - name: software-pkg-secret
+        secret:
+          secretName: software-pkg-secret

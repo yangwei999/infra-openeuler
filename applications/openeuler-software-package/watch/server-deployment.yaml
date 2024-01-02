@@ -1,55 +1,36 @@
----
-kind: Deployment
 apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: server
+  name: watch-deployment
   namespace: openeuler-software-pkg
 spec:
-  replicas: 1
-  strategy:
-    rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 0
-    type: RollingUpdate
   selector:
     matchLabels:
-      app: server
+      app: watch
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
   template:
     metadata:
       labels:
-        app: server
-    spec:
+        app: watch
+    spec:      
       imagePullSecrets:
-        - name: huawei-swr-image-pull-secret
+      - name: huawei-swr-image-pull-secret
       containers:
-      - name: server
-        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/software-package-server:9fd3059ecb6f225e3ac4b4af8109db21470cf5e4
+      - image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/software-package-watch:dev_watch-3e2d30
+        imagePullPolicy: IfNotPresent        
         args:
-        - --port=8080
         - --config-file=/opt/app/config/config.yaml
+        name: watch        
         resources:
-          requests:
-            cpu: 200m
-            memory: 200Mi
           limits:
-            cpu: 1000m
-            memory: 1000Mi
-        livenessProbe:
-          httpGet:
-            path: /swagger/doc.json
-            port: 8080
-          initialDelaySeconds: 5    
-          periodSeconds: 5           
-          timeoutSeconds: 5          
-          failureThreshold: 3
-        readinessProbe:              
-          initialDelaySeconds: 5    
-          periodSeconds: 5           
-          timeoutSeconds: 5         
-          failureThreshold: 3        
-          httpGet:
-            path: /swagger/doc.json
-            port: 8080
+            cpu: 500m
+            memory: 500Mi
+          requests:
+            cpu: 500m
+            memory: 500Mi
         env:
         - name: DB_HOST
           valueFrom:
@@ -76,31 +57,11 @@ spec:
             secretKeyRef:
               name: software-pkg-secret
               key: kafka_address
-        - name: OBS_AK
-          valueFrom:
-            secretKeyRef:
-              name: software-pkg-secret
-              key: obs_ak
-        - name: OBS_SK
-          valueFrom:
-            secretKeyRef:
-              name: software-pkg-secret
-              key: obs_sk
-        - name: OBS_PROJECT
-          valueFrom:
-            secretKeyRef:
-              name: software-pkg-secret
-              key: obs_project
         - name: ACCESS_TOKEN
           valueFrom:
             secretKeyRef:
               name: software-pkg-secret
-              key: openeuler_robot_token
-        - name: ENCRYPTION_KEY
-          valueFrom:
-            secretKeyRef:
-              name: software-pkg-secret
-              key: encryption_key
+              key: access_token
         - name: KAFKA_VERSION
           valueFrom:
             secretKeyRef:
@@ -126,15 +87,48 @@ spec:
             secretKeyRef:
               name: software-pkg-secret
               key: om_app_secret
+        - name: ROBOT_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: software-pkg-secret
+              key: robot_token
+        - name: ROBOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: software-pkg-secret
+              key: robot_username
+        - name: ROBOT_EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: software-pkg-secret
+              key: robot_email
+        - name: EMAIL_AUTH_CODE
+          valueFrom:
+            secretKeyRef:
+              name: software-pkg-secret
+              key: email_auth_code
+        - name: EMAIL_FROM
+          valueFrom:
+            secretKeyRef:
+              name: software-pkg-secret
+              key: email_from
+        - name: EMAIL_HOST
+          valueFrom:
+            secretKeyRef:
+              name: software-pkg-secret
+              key: email_host
+        - name: EMAIL_PORT
+          valueFrom:
+            secretKeyRef:
+              name: software-pkg-secret
+              key: email_port
         volumeMounts:
         - mountPath: /opt/app/config/config.yaml
-          name: server-configmap
+          name: watch-configmap
           subPath: config.yaml
       volumes:
       - configMap:
           defaultMode: 420
-          name: server-configmap
-        name: server-configmap
-        
-      
+          name: watch-configmap
+        name: watch-configmap
 

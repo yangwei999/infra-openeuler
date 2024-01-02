@@ -1,0 +1,14 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- deployment.yaml
+- configmap.yaml
+commonAnnotations:
+  kubernetes.ops.cluster: test
+  kubernetes.ops.email: yangwei226@h-partners.com
+  kubernetes.ops.owner: yangwei
+  kubernetes.ops.region: hk
+namespace: openeuler-software-pkg
+images:
+- name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/software-package-gateway
+  newTag: main-3adff0

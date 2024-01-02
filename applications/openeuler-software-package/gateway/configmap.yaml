@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gateway-configmap
+  namespace: openeuler-software-pkg
+data:
+  config.yaml: |    
+    user_agent: software-pkg
+    group_name: software-package-gateway
+    token: "${ROBOT_TOKEN}"
+    ci_robot_name: openeuler-ci-bot
+    topics:
+      software_pkg_hook_event: openeuler-community
+      software_pkg_ci_checked: software_pkg_ci_checked
+    kafka:
+      address: "${KAFKA_ADDRESS}"
+      version: "${KAFKA_VERSION}"
+    repository:
+      org: src-openeuler
+      repo: software-package-server
