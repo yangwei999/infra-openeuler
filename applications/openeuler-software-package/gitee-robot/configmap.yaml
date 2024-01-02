@@ -14,8 +14,8 @@ data:
         username: "${OPENEULER_ROBOT_NAME}"
         token: "${OPENEULER_ROBOT_TOKEN}"
       ci_repo:
-        repo: software-pkg
-        link: https://gitee.com/software-package-server/software-package-server.git
+        repo: software-package-server
+        link: https://gitee.com/I-am-a-robot/software-package-server.git
     kafka:
       address: "${KAFKA_ADDRESS}"
       version: "${KAFKA_VERSION}"
