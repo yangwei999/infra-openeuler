@@ -45,3 +45,21 @@ spec:
       secretName: repo-tls
   rules:
     - host: archives.openeuler.org
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/permanent-redirect: https://de-repo.openeuler.org$request_uri
+  name: repo-paris-hk-ingress
+  namespace: repo-mirror
+spec:
+  tls:
+    - hosts:
+        - fr-repo.openeuler.org
+      secretName: repo-tls
+  rules:
+    - host: fr-repo.openeuler.org
