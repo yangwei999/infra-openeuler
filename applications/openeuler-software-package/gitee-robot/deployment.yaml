@@ -60,6 +60,11 @@ spec:
             secretKeyRef:
               name: software-pkg-secret
               key: kafka_address
+        - name: KAFKA_VERSION
+          valueFrom:
+            secretKeyRef:
+              name: software-pkg-secret
+              key: kafka_version
         - name: MAINTAINER_EMAIL
           valueFrom:
             secretKeyRef:
@@ -110,11 +115,21 @@ spec:
             secretKeyRef:
               name: software-pkg-secret
               key: openeuler_robot_token
+        - name: APP_ID
+          valueFrom:
+            secretKeyRef:
+              name: software-pkg-secret
+              key: app_id
         - name: OPENEULER_ROBOT_NAME
           valueFrom:
             secretKeyRef:
               name: software-pkg-secret
               key: openeuler_robot_name
+        - name: APP_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: software-pkg-secret
+              key: app_secret
         volumeMounts:
         - mountPath: /opt/app/config/config.yaml
           name: robot-configmap

@@ -26,7 +26,6 @@ spec:
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/software-package-github-server:1ff44243ce5364d6d5068e1db6c236d47508582b
         args:
         - --config-file=/opt/app/config/config.yaml
-        - --github-token-path=/opt/app/config/oauth
         resources:
           requests:
             cpu: 200m
@@ -60,6 +59,11 @@ spec:
             secretKeyRef:
               name: software-pkg-secret
               key: kafka_address
+        - name: KAFKA_VERSION
+          valueFrom:
+            secretKeyRef:
+              name: software-pkg-secret
+              key: kafka_version
         - name: GITHUB_ROBOT_USERNAME
           valueFrom:
             secretKeyRef:
@@ -80,6 +84,16 @@ spec:
             secretKeyRef:
               name: software-pkg-secret
               key: robot_token
+        - name: APP_ID
+          valueFrom:
+            secretKeyRef:
+              name: software-pkg-secret
+              key: app_id
+        - name: APP_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: software-pkg-secret
+              key: app_secret
         volumeMounts:
         - mountPath: /opt/app/config/config.yaml
           name: server-configmap

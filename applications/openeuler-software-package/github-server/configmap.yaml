@@ -5,37 +5,29 @@ metadata:
   namespace: openeuler-software-pkg
 data:
   config.yaml: |
-    mq:
+    kafka:
       address: "${KAFKA_ADDRESS}"
+      version: "${KAFKA_VERSION}"
     message_server:
       group: software-package-github-server
       topics:
-        new_pkg: software_pkg_indirectly_approved
+        push_code: software_pkg_indirectly_approved
       message:
         topics_to_notify:
-          created_repo: software_pkg_repo_created
-          pushed_code: software_pkg_code_saved
-    encryption:
-      encryption_key: "${ENCRYPTION_KEY}"
-    repo:
-      org: src-openeuler
+          pushed_code: software_pkg_repo_code_pushed
     code:
       robot:
         username: "${GITHUB_ROBOT_USERNAME}"
         token: "${GITHUB_ROBOT_TOKEN}"
+      watch:
+        interval: 180
+        loop_times: 3 
+      org: src-openeuler
       ci_repo:
         repo: software-pkg
-        link: https://gitee.com/I-am-a-robot/software-pkg.git
-      org: src-openeuler
-    postgresql:
-      table:
-        software_pkg_pr: software_pkg_watch_github
-      db:
-        host: "${DB_HOST}"
-        port: 5432
-        user: "${DB_USER}"
-        pwd: "${DB_PWD}"
-        name: "${DB_NAME}"
-        life: 2
-        max_conn: 500
-        max_idle: 250
+        link: https://gitee.com/I-am-a-robot/software-pkg.git  
+    om_api:
+      app_id: "${APP_ID}"
+      app_secret: "${APP_SECRET}"
+      token_endpoint: https://omapi.osinfra.cn/oneid/manager/token
+      user_endpoint: https://omapi.osinfra.cn/oneid/manager/getuserinfo?username=

@@ -1,33 +1,72 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: server-configmap
+  name: watch-configmap
   namespace: openeuler-software-pkg
 data:
   config.yaml: |
+    kafka:
+      address: "${KAFKA_ADDRESS}"
+      version: "${KAFKA_VERSION}"
+
     postgresql:
       db:
         host: "${DB_HOST}"
-        port: 5432
         user: "${DB_USER}"
         pwd: "${DB_PWD}"
         name: "${DB_NAME}"
+        port: 5432
+        life: 2
+        max_conn: 500
+        max_idle: 250
       table:
         review_comment: review_comment
         translation_comment: translation_comment
-    mq:
-      address: "${KAFKA_ADDRESS}"
-      version: "${KAFKA_VERSION}"
-      topics:
-        software_pkg_closed: software_pkg_closed
-        software_pkg_applied: software_pkg_applied
-        software_pkg_retested: software_pkg_retested
-        software_pkg_code_updated: software_pkg_code_updated
-        software_pkg_already_existed: software_pkg_already_existed
-    middleware:
-      user_info_url: https://omapi.osinfra.cn/oneid/personal/center/user
+      watch_table:
+        watch_community_pr: watch_community_pr
+    watch:
+      robot_token: "${ROBOT_TOKEN}"
+
+    pull_request:
+      robot:
+        username: "${ROBOT_USERNAME}"
+        token: "${ROBOT_TOKEN}"
+        email: "${ROBOT_EMAIL}"
+        repo: community_openeuler
+        link: https://gitee.com/I-am-a-robot/community_openeuler.git
+      community_robot:
+        token: "${ROBOT_TOKEN}"
+        link: https://gitee.com/openeuler/community.git
+      software_pkg:
+        endpoint: https://software-pkg.openeuler.org/zh/package-detail/
+    email:
+      maintainer_email: "${EMAIL_AUTH_CODE}"
+      email:
+        auth_code: "${EMAIL_AUTH_CODE}"
+        from: "${EMAIL_FROM}"
+        host: "${EMAIL_HOST}"
+        port: ${EMAIL_PORT}
+    mongo:
+      db:
+        conn: "${MONGODB_CONN}"
+        db: "${MONGODB_DB_NAME}"
+      collections:
+        software_pkg: software_pkg
+
+    pkg_manager:
+      access_token: "${ACCESS_TOKEN}"
+      existing_pkgs:
+        meta_data_endpoint: https://omapi.osinfra.cn/query/sig/info?community=openeuler&search=fuzzy&repo=src-openeuler/
+        org_of_pkg_repo: src-openeuler
+        default_info:
+          platform: gitee
+          importer_name: software-pkg-robot
+          importer_email: software-pkg-robot@openeuler.org
+          purpose_to_import: "add software package to openeuler"
+    topics:
+      software_pkg_initialized: software_pkg_initialized
     user:
-      read_url: https://dsapi.osinfra.cn/query/sig/info?community=openeuler
+      read_url: https://omapi.osinfra.cn/query/sig/info?community=openeuler
       interval: 1
       om:
         app_id: "${OM_APP_ID}"
@@ -35,37 +74,6 @@ data:
         token_endpoint: https://omapi.osinfra.cn/oneid/manager/token
         gitee_user_endpoint: https://omapi.osinfra.cn/oneid/manager/getuserinfo?giteeLogin=
         github_user_endpoint: https://omapi.osinfra.cn/oneid/manager/getuserinfo?githubLogin=
-    mongo:
-      db:
-        conn: "${MONGODB_CONN}"
-        db: "${MONGODB_DB_NAME}"
-      collections:
-        software_pkg: software_pkg
-    translation:
-      access_key: "${OBS_AK}"
-      secret_key: "${OBS_SK}"
-      project: "${OBS_PROJECT}"
-      region: cn-north-4
-      endpoint: nlp-ext.cn-north-4.myhuaweicloud.com
-    sensitive_words:
-      endpoint: https://moderation.cn-north-4.myhuaweicloud.com
-      access_key: "${OBS_AK}"
-      secret_key: "${OBS_SK}"
-      region: cn-north-4
-      iam_endpoint: https://iam.cn-north-4.myhuaweicloud.com
-    sig:
-      read_url: https://dsapi.osinfra.cn/query/sig/scoreAll?community=openeuler
-      interval: 1
-    pkg_manager:
-      access_token: "${ACCESS_TOKEN}"
-      existing_pkgs:
-        meta_data_endpoint: https://dsapi.osinfra.cn/query/sig/info?community=openeuler&search=fuzzy&repo=src-openeuler/
-        org_of_pkg_repo: src-openeuler
-        default_info:
-          platform: gitee
-          importer_name: software-pkg-robot
-          importer_email: software-pkg-robot@openeuler.org
-          purpose_to_import: "add software package to openeuler"
     software_pkg:
       domain_primitive:
         platform_org_links:
@@ -153,7 +161,3 @@ data:
         owner: "repo_member"
         modifications:
         - code
-    encryption:
-      encryption_key: "${ENCRYPTION_KEY}"
-    cla:
-      check_url: https://clasign.osinfra.cn/api/v1/individual-signing/gitee_openeuler-1611298811283968340

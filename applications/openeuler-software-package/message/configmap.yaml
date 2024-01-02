@@ -5,19 +5,35 @@ metadata:
   namespace: openeuler-software-pkg
 data:
   config.yaml: |
+    ci:
+      work_dir: /opt/app/software
+      ci_repo:
+        org: src-openeuler
+        repo: software-package-server
+        owner: "weiwei123444"
+        email: "${ROBOT_EMAIL}"
+        token: "${ROBOT_TOKEN}"
+        link: https://gitee.com/weiwei123444/software-package-server.git
+        file_addr: "https://gitee.com/weiwei123444/software-package-server/raw/%s/%s"
+        lfs_file_addr: "https://gitee.com/weiwei123444/software-package-server/raw/%s/%s?lfs=1"
+    mongo:
+      db:
+        conn: "${MONGODB_CONN}"
+        db: "${MONGODB_DB_NAME}"
+      collections:
+        software_pkg: software_pkg
     kafka:
       address: "${KAFKA_ADDRESS}"
-    group_name: software-package
-    topics_to_subscribe:
-      software_pkg_ci_checking: software_pkg_ci_checking
-      software_pkg_ci_checked: software_pkg_ci_checked
-      software_pkg_code_saved: software_pkg_code_saved
-      software_pkg_initialized: software_pkg_initialized
-      software_pkg_repo_created: software_pkg_repo_created
+      version: "${KAFKA_VERSION}"
+    topics:
+      software_pkg_closed: software_pkg_closed
+      software_pkg_ci_done: software_pkg_ci_checked
+      software_pkg_applied: software_pkg_applied
+      software_pkg_retested: software_pkg_retested
+      software_pkg_code_updated: software_pkg_code_updated
+      software_pkg_code_changed: software_pkg_code_changed
       software_pkg_already_existed: software_pkg_already_existed
-    topics_to_notify:
-      already_closed_software_pkg: software_pkg_already_closed
-      indirectly_approved_software_pkg: software_pkg_indirectly_approved
+      software_pkg_repo_code_pushed: software_pkg_repo_code_pushed
     postgresql:
       db:
         host: "${DB_HOST}"
@@ -29,13 +45,10 @@ data:
         max_conn: 500
         max_idle: 250
       table:
-        software_pkg_basic: software_pkg_basic
         review_comment: review_comment
         translation_comment: translation_comment
-        operation_log: operation_log
-    sig:
-      read_url: https://dsapi.osinfra.cn/query/sig/scoreAll?community=openeuler
-      interval: 1
+    encryption:
+      encryption_key: "${ENCRYPTION_KEY}"
     pkg_manager:
       access_token: "${ACCESS_TOKEN}"
       existing_pkgs:
@@ -45,24 +58,11 @@ data:
           platform: gitee
           importer_name: software-pkg-robot
           importer_email: software-pkg-robot@openeuler.org
-          reason_to_import: "add software package to openeuler"
+          purpose_to_import: "add software package to openeuler"
     software_pkg:
       domain_primitive:
-        supported_platforms:
-          - gitee
-          - github
-        local_platform: gitee
-        max_length_of_review_comment: 2000
-    encryption:
-      encryption_key: "${ENCRYPTION_KEY}"
-    ci:
-      work_dir: /opt/app/software
-      ci_service: software-pkg-service
-      user:
-        user: "${ROBOT_USERNAME}"
-        email: "${ROBOT_EMAIL}"
-        token: "${ROBOT_TOKEN}"
-      ci_repo:
-        org: I-am-a-robot
-        repo: software-pkg
-        link: https://gitee.com/I-am-a-robot/software-pkg.git
+        platform_org_links:
+          gitee: https://gitee.com/src-openeuler/
+          github: https://github.com/src-openeuler/
+      max_length_of_review_comment: 2000
+    
