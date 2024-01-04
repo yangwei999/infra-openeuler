@@ -138,7 +138,7 @@ data:
       max_list_number: 1000
 
       # sshkey name
-      key_name: eur-test
+      key_name: eur
 
       # 规格映射
       flavorMapping:
