@@ -37,6 +37,8 @@ spec:
         - 'cp /root/.ssh/id_rsa-ro /root/.ssh/id_rsa;
 
           chmod +x /home/resalloc/provision/local-*;
+          
+          chmod +x /home/resalloc/provision/check-pod;
 
           chmod 0400 /root/.ssh/id_rsa;
 
@@ -105,6 +107,9 @@ spec:
             cpu: 500m
             memory: 500Mi
         volumeMounts:
+        - mountPath: /home/resalloc/provision/ecs_servers.yaml
+          name: copr-resalloc
+          subPath: ecs_servers.yaml
         - mountPath: /etc/resallocserver/pools.yaml
           name: copr-resalloc
           subPath: pools.yaml
