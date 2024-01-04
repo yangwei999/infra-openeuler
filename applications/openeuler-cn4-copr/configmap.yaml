@@ -105,7 +105,7 @@ data:
       region: cn-east-3
 
       # 服务器名称前缀
-      name_prefix: eur-worker
+      name_prefix: eur-prod-worker
 
       # 项目的唯一标识,和地区相关
       projectId: 0612bdc78f80251f2fcac017ebad7ad7
