@@ -66,6 +66,21 @@ spec:
           value: /home/mockbuild/.ssh/id_backend.pub:copr-secrets:backend_id_rsa.pub
         - name: BUILDER_PVC_LABEL0
           value: failure-domain.beta.kubernetes.io/zone=cn-north-4a
+        - name: IAM_DOMAIN
+          valueFrom:
+            secretKeyRef:
+              key: IAM_DOMAIN
+              name: copr-secrets
+        - name: IAM_USER
+          valueFrom:
+            secretKeyRef:
+              key: IAM_USER
+              name: copr-secrets
+        - name: IAM_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: IAM_PASSWORD
+              name: copr-secrets
         image: swr.cn-north-4.myhuaweicloud.com/opensourceway/copr/resalloc:v1.0.20230221100605
         imagePullPolicy: IfNotPresent
         livenessProbe:
