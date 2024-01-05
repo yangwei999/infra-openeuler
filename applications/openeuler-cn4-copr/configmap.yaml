@@ -145,7 +145,7 @@ data:
       # 规格映射
       flavorMapping:
         x86:
-            imageRef: 257f1b09-8138-47ea-b6f0-01387c9045fb
+            imageRef: 83801db6-bab1-47c6-ae5f-445ac9fd8ce6
             l1: c3.xlarge.2
             l2: c3ne.xlarge.2
             l3: hc2.xlarge.2
