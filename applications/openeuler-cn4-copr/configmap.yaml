@@ -79,6 +79,7 @@ data:
         cmd_new: "/home/resalloc/provision/local-new-x86"
         cmd_delete: "/home/resalloc/provision/local-delete"
         cmd_livecheck: "/home/resalloc/provision/check-pod"
+        cmd_list: "/home/resalloc/provision/local-list"
         livecheck_period: 180
         reuse_opportunity_time: 0
         reuse_max_count: 0
@@ -95,6 +96,7 @@ data:
         cmd_new: "/home/resalloc/provision/local-new-aarch64"
         cmd_delete: "/home/resalloc/provision/local-delete"
         cmd_livecheck: "/home/resalloc/provision/check-pod"
+        cmd_list: "/home/resalloc/provision/local-list"
         livecheck_period: 180
         reuse_opportunity_time: 0
         reuse_max_count: 0
