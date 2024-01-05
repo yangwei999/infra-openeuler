@@ -140,6 +140,8 @@ data:
       # sshkey name
       key_name: eur
 
+      user_data: IyEvYmluL2Jhc2gKCnNlZCAtaSAncy8uKmNvcHItZnJvbnRlbmQvMTcyLjE2LjIuMTQ1IGNvcHItZnJvbnRlbmQvZycgL2V0Yy9ob3N0cwpzZWQgLWkgJ3MvLipjb3ByLWRpc3RnaXQvMTcyLjE2LjIuMjQyICBjb3ByLWRpc3RnaXQvZycgL2V0Yy9ob3N0cwo=
+
       # 规格映射
       flavorMapping:
         x86:
