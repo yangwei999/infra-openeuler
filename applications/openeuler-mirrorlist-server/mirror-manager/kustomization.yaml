@@ -16,4 +16,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/mirror-manager
-  newTag: 1cc02c18fc0dde32c99f17e793f5de9f3edc8df1
+  newTag: f599352f5b9bf418f999028e087806245da8e86a
