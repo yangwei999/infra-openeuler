@@ -12,4 +12,4 @@ images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/common/oauth2-proxy
   newTag: 602184701e2fcf43b14378416771efa55d792717
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/summary
-  newTag: v1.0.20240109171017
+  newTag: v1.0.20240110154456
