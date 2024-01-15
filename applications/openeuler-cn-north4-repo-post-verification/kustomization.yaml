@@ -13,4 +13,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/repo-post-verification
-  newTag: df4bcbe52a90a326234932997ab26c432d4dc087
+  newTag: 6ea300b29b3bd2d76a5276f6ac8886058cd9ee7f
