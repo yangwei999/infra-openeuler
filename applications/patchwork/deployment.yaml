@@ -209,3 +209,6 @@ spec:
         - name: patchwork-file-volume
           persistentVolumeClaim:
             claimName: patchwork-share-disk-volume
+        - name: patchwork-configmap
+          configMap:
+            name: patchwork-configmap
