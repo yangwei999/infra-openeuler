@@ -176,6 +176,9 @@ spec:
             - name: patchwork-file-volume
               persistentVolumeClaim:
                 claimName: patchwork-share-disk-volume
+            - mountPath: /home/patchwork/repositories_branches_map.yaml
+              name: patchwork-configmap
+              subPath: repositories_branches_map.yaml
 ---
 apiVersion: batch/v1beta1
 kind: CronJob
@@ -354,3 +357,6 @@ spec:
             - name: patchwork-file-volume
               persistentVolumeClaim:
                 claimName: patchwork-share-disk-volume
+            - mountPath: /home/patchwork/repositories_branches_map.yaml
+              name: patchwork-configmap
+              subPath: repositories_branches_map.yaml
