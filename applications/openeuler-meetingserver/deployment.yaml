@@ -13,8 +13,10 @@ spec:
       annotations:
         vault.hashicorp.com/agent-inject: 'true'
         vault.hashicorp.com/role: 'openeuler-meeting'
-        vault.hashicorp.com/agent-inject-perms-secrets.yaml: "0600"
-        vault.hashicorp.com/agent-inject-perms-ca.pem: "0600"
+        vault.hashicorp.com/agent-inject-perms-secrets.yaml: "0400"
+        vault.hashicorp.com/agent-inject-perms-ca.pem: "0400"
+        vault.hashicorp.com/agent-inject-perms-server.crt: "0400"
+        vault.hashicorp.com/agent-inject-perms-server.key: "0400"
         vault.hashicorp.com/agent-run-as-user: "1000"
         vault.hashicorp.com/agent-inject-secret-secrets.yaml: 'internal/data/mindspore/openeuler-meeting'
         vault.hashicorp.com/agent-pre-populate-only: "true"
@@ -27,6 +29,16 @@ spec:
           {{- with secret "internal/data/mindspore/openeuler-meeting" -}}  
           {{ .Data.data.MysqlCA }}
           {{- end }}
+        vault.hashicorp.com/agent-inject-secret-server.crt: 'internal/data/mindspore/openeuler-meeting'
+        vault.hashicorp.com/agent-inject-template-server.crt: |  
+          {{- with secret "internal/data/mindspore/openeuler-meeting" -}}  
+          {{ .Data.data.servercrt }}
+          {{- end }}
+        vault.hashicorp.com/agent-inject-secret-server.key: 'internal/data/mindspore/openeuler-meeting'
+        vault.hashicorp.com/agent-inject-template-server.key: |  
+          {{- with secret "internal/data/mindspore/openeuler-meeting" -}}  
+          {{ .Data.data.serverkey }}
+          {{- end }}
       labels:
         app: meetingserver
     spec:
@@ -38,7 +50,11 @@ spec:
           value: /vault/secrets/secrets.yaml
         - name: MYSQL_TLS_PEM_PATH
           value: /vault/secrets/ca.pem
-        image: swr.ap-southeast-1.myhuaweicloud.com/infra-hk/openeuler/meetingserver:master-6148c8
+        - name: TLS_CRT_PATH
+          value: /vault/secrets/server.crt
+        - name: TLS_KEY_PATH
+          value: /vault/secrets/server.key
+        image: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/app-meeting-server:master-6148c8
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
