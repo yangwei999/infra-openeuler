@@ -49,6 +49,14 @@ spec:
           requests:
             cpu: 1000m
             memory: 1000Mi
+        volumeMounts:
+        - mountPath: /usr/share/nginx/html/tencent18356898507357621707.txt
+          subPath: tencent18356898507357621707_txt
+          name: openeuler-website-secret
+      volumes:
+      - name: openeuler-website-secret
+        secret:
+          secretName: openeuler-website
 ---
 apiVersion: apps/v1
 kind: Deployment
