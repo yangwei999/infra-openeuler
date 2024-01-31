@@ -15,4 +15,4 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 images:
 - name: swr.cn-north-4.myhuaweicloud.com/opensourceway/openeuler/sync-bot
-  newTag: 5c167953716c128f55905c98d033c39ff09af34f
+  newTag: 5932af23d9c8fe827d83df4fe0a1c508977a981c
