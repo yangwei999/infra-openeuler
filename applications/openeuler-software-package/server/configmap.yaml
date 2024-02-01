@@ -32,7 +32,7 @@ data:
       om:
         app_id: "${OM_APP_ID}"
         app_secret: "${OM_APP_SECRET}"
-        token_endpoint: https://omapi.osinfra.cn/oneid/manager/token
+        token_endpoint: https://omapi.osinfra.cn/oneid/manager/tokens
         gitee_user_endpoint: https://omapi.osinfra.cn/oneid/manager/getuserinfo?giteeLogin=
         github_user_endpoint: https://omapi.osinfra.cn/oneid/manager/getuserinfo?githubLogin=
     mongo:
